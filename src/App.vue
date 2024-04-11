@@ -28,6 +28,16 @@ body {
   margin: 0;
 }
 
+h1 {
+  color: white;
+  text-align: center;
+}
+
+h2 {
+  color: white;
+  font-weight: normal;
+}
+
 #app {
   height: 100vh;
 }
@@ -49,6 +59,15 @@ body {
   background-origin: content-box;
 }
 
+.content{
+  padding: 7rem 12rem 0 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -64,12 +83,40 @@ body {
   box-sizing: border-box;
 }
 
+.full-width-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .btn-primary {
   padding: 7px 35px;
   border-radius: 0;
   border: 0;
   font-family: 'Jost-3', sans-serif;
   font-size: large;
+}
+
+.btn-primary:hover {
+  box-shadow: 0px 0px 10px white;
+  cursor: pointer;
+}
+
+.btn-primary-outline {
+  padding: 7px 35px;
+  border-radius: 0;
+  border: 1px solid #fff;
+  font-family: 'Jost-3', sans-serif;
+  font-size: large;
+  color: white;
+  background-color: transparent;
+}
+
+.btn-primary-outline:hover {
+  background-color: white;
+  box-shadow: 0px 0px 10px white;
+  cursor: pointer;
+  color: black
 }
 
 </style>

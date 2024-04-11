@@ -1,7 +1,7 @@
 <template>
   <NavBarLogin />
   <div class="logo-container">
-    <img src="../assets/weview-logo.png" class="logo" />
+    <img src="../assets/weview-logo.png" class="logo-big" />
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
   position: relative;
 }
 
-.logo {
+.logo-big {
   position: absolute;
   top: 15rem;
   left: 50%;

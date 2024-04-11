@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <button class="btn btn-primary" @click="login()">Login</button>
+    <button class="btn btn-primary login-button" @click="login()">Login</button>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style>
-button {
+.login-button {
   margin-left: auto;
   margin-right: 30px;
 }

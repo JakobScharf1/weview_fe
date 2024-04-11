@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import SSOLogin from "@/components/SSOLogin.vue";
+import HomeDashboard from "@/components/HomeDashboard.vue";
+import ChooseViewType from "@/components/ChooseViewType.vue";
 
 const routes = [
     {
@@ -9,6 +11,14 @@ const routes = [
     {
         path: '/login',
         component: SSOLogin
+    },
+    {
+        path: '/home',
+        component: HomeDashboard
+    },
+    {
+        path: '/chooseViewType',
+        component: ChooseViewType
     }
 ]
 
