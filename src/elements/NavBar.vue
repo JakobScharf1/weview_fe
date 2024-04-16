@@ -1,20 +1,16 @@
 <template>
   <div class="navbar">
     <img class="logo" src="../assets/weview-logo.png" alt="WeMatch Logo">
-    <button class="btn-primary-outline dashboard-button" @click="$router.push('/home')"><BIconCaretLeft />Dashboard</button>
+    <button class="btn-primary-outline dashboard-button" @click="$router.push('/home')">Dashboard</button>
     <button class="btn-primary logout-button" @click="logout()">Logout</button>
   </div>
 </template>
 
 <script>
 import {logout} from "@/firebase-config";
-import {BIconCaretLeft} from "bootstrap-icons-vue";
 
 export default {
   name: "NavBar",
-  components: {
-    BIconCaretLeft,
-  },
   methods: {
     logout() {
       logout()

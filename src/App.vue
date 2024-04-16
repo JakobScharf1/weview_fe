@@ -1,8 +1,6 @@
 <template>
-  <div class="main-container">
     <div class="background"></div>
     <RouterView/>
-  </div>
 </template>
 
 <script>
@@ -13,7 +11,16 @@ export default {
   methods: {
     router() {
       return router
+    },
+    clearLocalStorage() {
+      localStorage.clear();
     }
+  },
+  created() {
+    window.addEventListener('beforeunload', this.clearLocalStorage)
+  },
+  unmounted() {
+    window.addEventListener('beforeunload', this.clearLocalStorage)
   }
 }
 </script>
@@ -24,27 +31,18 @@ export default {
 body {
   background-color: #001F25;
   font-family: 'Jost-1', sans-serif;
-  height: 100vh;
-  margin: 0;
 }
 
 h1 {
   color: white;
   text-align: center;
+  font-family: 'Jost-3', sans-serif;
+  margin: 0;
 }
 
 h2 {
   color: white;
   font-weight: normal;
-}
-
-#app {
-  height: 100vh;
-}
-
-.main-container {
-  position: relative;
-  height: 100vh;
 }
 
 .background {
@@ -56,11 +54,11 @@ h2 {
   background-image: url('./assets/background.png');
   background-size: contain;
   background-repeat: no-repeat;
-  background-origin: content-box;
+  background-position: left bottom;
 }
 
 .content{
-  padding: 7rem 12rem 0 12rem;
+  margin: 7rem 12rem 0 12rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,9 +82,11 @@ h2 {
 }
 
 .full-width-div {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .btn-primary {
@@ -95,6 +95,8 @@ h2 {
   border: 0;
   font-family: 'Jost-3', sans-serif;
   font-size: large;
+  background-color: white;
+  height: fit-content;
 }
 
 .btn-primary:hover {
@@ -103,6 +105,7 @@ h2 {
 }
 
 .btn-primary-outline {
+  height: fit-content;
   padding: 7px 35px;
   border-radius: 0;
   border: 1px solid #fff;
@@ -118,5 +121,44 @@ h2 {
   cursor: pointer;
   color: black
 }
+
+.back-icon {
+  color: white;
+  height: 25px;
+  width: auto;
+  margin-right: 10px;
+}
+
+.back-icon:hover {
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px white;
+  cursor: pointer;
+}
+
+.hinweistext {
+  color: darkgray;
+  font-size: small;
+}
+
+
+hr {
+  width: 500px;
+  border-width: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0;
+  padding: 0;
+}
+
+.centered {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+}
+
+.green-border {
+  border: 1px solid green;
+}
+
 
 </style>

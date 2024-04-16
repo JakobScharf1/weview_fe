@@ -1,10 +1,13 @@
 <template>
   <NavBar />
   <div class="content">
-    <h1>Wähle aus, was für ein Video du versenden willst.</h1>
+    <div class="full-width-div">
+      <BIconArrowLeftCircleFill class="back-icon" @click="$router.back()"/>
+      <h1>Wähle aus, was für ein Video du versenden willst.</h1>
+    </div>
 
     <div class="choose-buttons-container centered" id="first-one">
-      <div class="choose-button" id="button-candidate" @click="setActive('button-candidate')">
+      <div class="choose-button" id="button-candidate" :class="{ 'active': activeButton === 'candidate' }"  @click="setActive('button-candidate')">
         <div class="choose-button-icon-div centered">
           <BIconPerson class="choose-button-icon"/>
         </div>
@@ -17,7 +20,7 @@
     <hr />
 
     <div class="choose-buttons-container centered">
-      <div class="choose-button" id="button-job" @click="setActive('button-job')">
+      <div class="choose-button" id="button-job" :class="{ 'active': activeButton === 'job' }" @click="setActive('button-job')">
         <div class="choose-button-icon-div centered">
           <BIconBriefcase class="choose-button-icon"/>
         </div>
@@ -30,7 +33,7 @@
     <hr />
 
     <div class="choose-buttons-container centered">
-      <div class="choose-button" id="button-personal" @click="setActive('button-personal')">
+      <div class="choose-button" id="button-personal" :class="{ 'active': activeButton === 'personal' }" @click="setActive('button-personal')">
         <div class="choose-button-icon-div centered">
           <BIconPersonSquare class="choose-button-icon"/>
         </div>
@@ -39,19 +42,26 @@
         </div>
       </div>
     </div>
-
-    <button class="btn-primary" id="weiter-button">Weiter</button>
+    <span id="error">Bitte wähle eine Option aus.</span>
+    <button class="btn-primary" id="weiter-button" @click="routerPush()">Weiter</button>
 
   </div>
 </template>
 
 <script>
 import NavBar from "@/elements/NavBar.vue";
-import {BIconPerson, BIconBriefcase, BIconPersonSquare} from "bootstrap-icons-vue";
+import {BIconPerson, BIconBriefcase, BIconPersonSquare, BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
+import router from "@/router";
 
 export default {
   name: "ChooseViewType",
+  data() {
+    return {
+      activeButton: null
+    }
+  },
   components: {
+    BIconArrowLeftCircleFill,
     NavBar,
     BIconPerson,
     BIconBriefcase,
@@ -59,6 +69,7 @@ export default {
   },
   methods: {
     setActive(buttonId) {
+      this.activeButton = buttonId;
       const buttons = document.querySelectorAll('.choose-button');
       buttons.forEach(button => {
         button.classList.remove('active');
@@ -74,28 +85,33 @@ export default {
       } else if(buttonId === "button-personal"){
         localStorage.setItem("view-type", "personal")
       }
+    },
+
+    routerPush(){
+      if(localStorage.getItem("view-type") !== null){
+        document.getElementById("error").style.display = "none";
+        router.push('/dataUpload')
+      } else {
+        document.getElementById("error").style.display = "inline";
+      }
+    }
+  },
+  created() {
+    switch(localStorage.getItem("view-type")) {
+      case "candidate":
+        this.activeButton = "candidate";
+        break;
+      case "job": this.activeButton = "job";
+        break;
+      case "personal":
+        this.activeButton = "personal";
+        break;
     }
   }
 }
 </script>
 
 <style>
-
-hr {
-  width: 500px;
-  border-width: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 0;
-  padding: 0;
-}
-
-.centered {
-  display: flex;
-  box-sizing: border-box;
-  justify-content: center;
-  align-items: center;
-}
-
 .choose-buttons-container {
   width: 100%;
 }
@@ -107,6 +123,7 @@ hr {
   display: flex;
   //justify-content: space-evenly;
   align-items: center;
+  background-color: transparent;
 }
 
 .choose-button:hover,
@@ -135,6 +152,11 @@ hr {
 
 #first-one {
   margin-top: 50px;
+}
+
+#error {
+  color: red;
+  display: none;
 }
 
 #weiter-button {

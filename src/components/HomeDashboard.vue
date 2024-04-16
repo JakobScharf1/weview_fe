@@ -4,7 +4,7 @@
     <div class="full-width-div">
       <h1>Deine WeViews</h1>
     </div>
-    <div class="full-width-div">
+    <div class="full-width-div margin-topper">
       <button class="btn-primary" @click="$router.push('/chooseViewType')">
         <BIconPlus id="plus-icon-dashboard" />
         <span id="create-button-text-dashboard">Neue WeView erstellen</span>
@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style>
+
+.margin-topper {
+  margin-top: 50px;
+}
 
 #plus-icon-dashboard {
   height: 1.8em;

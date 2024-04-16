@@ -13,9 +13,11 @@
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
     "firebase": "^10.8.1",
     "vue": "^3.2.13",
     "vue-router": "^4.3.0",
+    "vue-simple-upload": "^0.1.6",
     "vue-spinner": "^1.0.4"
   },
   "devDependencies": {

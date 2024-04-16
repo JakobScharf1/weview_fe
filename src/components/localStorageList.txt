@@ -1,0 +1,23 @@
+video                   = Video Dateiname
+portrait                = Portrait Dateiname
+view-type               = candidate || job || personal
+
+job_project             = Projekt-/Job-Titel
+job_region              = Region/Einsatzort
+job_contracttype        = Vertragsart
+job_salary              = Gehalt
+job_jobportal           = Link zum Job im Job-Portal
+job_skills              = Skills
+job_descr               = Über das Projekt/den Job
+
+candidate_name          = Name
+candidate_region        = Region/Einsatzort
+candidate_contracttype  = Vertragsart
+candidate_profilelink   = Link zum Profil (Xing o.ä.)
+candidate_skills        = Skills
+candidate_descr         = Rahmenbedingungen
+
+personal_branche        = Markt
+personal_region         = Region
+personal_contracttype   = Vertragsart/-en
+personal_descr          = Sonstiges
