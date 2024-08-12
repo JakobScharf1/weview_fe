@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from '@/router';
 import cors from 'cors';
-import DotLoader from 'vue-spinner/src/PulseLoader.vue';
+import BounceLoader from 'vue-spinner/src/BounceLoader.vue';
 import firebase from "firebase/compat/app";
 
 const firebaseConfig = {
@@ -20,5 +20,5 @@ firebase.initializeApp(firebaseConfig);
 createApp(App)
     .use(router)
     .use(cors)
-    .component('dot-loader', DotLoader)
+    .component('bounce-loader', BounceLoader)
     .mount('#app')

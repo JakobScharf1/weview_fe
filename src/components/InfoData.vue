@@ -10,21 +10,21 @@
     <div v-if="this.viewType === 'candidate'"><InputFieldsCandidate /></div>
     <div v-if="this.viewType === 'personal'"><InputFieldsPersonal /></div>
 
-    <button class="btn-primary" id="weiter-button" @click="routerPush()">Weiter</button>
+    <button class="btn-primary" id="weiter-button" @click="submit()">Weiter</button>
 
   </div>
 </template>
 
 <script>
-
-import {defineComponent} from "vue";
 import NavBar from "@/elements/NavBar.vue";
 import {BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
 import InputFieldsJob from "@/elements/InputFieldsJob.vue";
 import router from "@/router";
 import InputFieldsCandidate from "@/elements/InputFieldsCandidate.vue";
+import InputFieldsPersonal from "@/elements/InputFieldsPersonal.vue";
+import BackendService from "@/services/BackendService";
 
-export default defineComponent({
+export default {
   name: "InfoData",
   data() {
     return {
@@ -34,18 +34,18 @@ export default defineComponent({
   components: {
     InputFieldsCandidate,
     InputFieldsJob,
+    InputFieldsPersonal,
     BIconArrowLeftCircleFill,
     NavBar
   },
   methods: {
-    routerPush() {
-      router.push("/infoData");
+    submit() {
+      BackendService.generateHTML().then(
+          router.push("/success")
+      );
     }
   },
-  beforeMount() {
-    localStorage.setItem("view-type", "job")
-  }
-})
+}
 </script>
 
 <style>

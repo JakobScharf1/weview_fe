@@ -1,5 +1,5 @@
 <template>
-  <NavBarLogin />
+  <NavBarLogin @update:isLoading="handleLoader" />
   <div class="logo-container">
     <img src="../assets/weview-logo.png" class="logo-big" />
   </div>
@@ -11,7 +11,7 @@ import NavBarLogin from "@/elements/NavBarLogin.vue";
 export default {
   name: "SSOLogin",
   components: {
-    NavBarLogin,
+    NavBarLogin
   },
 }
 </script>

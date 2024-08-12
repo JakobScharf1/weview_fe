@@ -101,7 +101,8 @@ export default {
       case "candidate":
         this.activeButton = "candidate";
         break;
-      case "job": this.activeButton = "job";
+      case "job":
+        this.activeButton = "job";
         break;
       case "personal":
         this.activeButton = "personal";

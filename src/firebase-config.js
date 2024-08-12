@@ -16,7 +16,7 @@ function login() {
         }
         localStorage.clear();
         localStorage.setItem("token", token);
-        localStorage.setItem("userMail", result.user.email.toString());
+        localStorage.setItem("email", result.user.email.toString());
 
         try {
             axios.post(url, requestBody)

@@ -5,6 +5,8 @@ import ChooseViewType from "@/components/ChooseViewType.vue";
 import DataUpload from "@/components/DataUpload.vue";
 import ContactData from "@/components/ContactData.vue";
 import InfoData from "@/components/InfoData.vue";
+import GeneratingSuccess from "@/components/GeneratingSuccess.vue";
+import DataCheck from "@/components/DataCheck.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -36,6 +38,14 @@ const router = createRouter({
         {
             path: '/infoData',
             component: InfoData
+        },
+        {
+            path: '/success',
+            component: GeneratingSuccess
+        },
+        {
+            path: '/datacheck',
+            component: DataCheck
         }
     ]
 })

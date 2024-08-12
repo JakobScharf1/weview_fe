@@ -12,8 +12,8 @@
           <BIconCameraVideo class="upload-button-icon"/>
         </div>
         <div class="upload-button-text-div centered">
-          <label for="video" class="btn-primary" id="video-button">Video hochladen</label>
-          <FileUpload accept="video/*" :target="videoUploadUrl" action="POST" style="display: none" id="video" v-on:finish="finishUpload('video')" />
+          <label for="video" id="video-button" :class="{ 'btn-primary-outline green-border' : finished_v, 'btn-primary' : !finished_v }">Video hochladen</label>
+          <input type="file" ref="vid" accept="video/*" style="display: none" id="video" v-on:change="uploadVideo()" :class="{ 'upload-complete' : finished_v }" />
           <span class="hinweistext">Bitte nutze ein hochauflösendes Video.</span>
           <span class="error" id="error-v">Bitte lade ein Video hoch.</span>
         </div>
@@ -28,8 +28,8 @@
           <BIconPersonBoundingBox class="upload-button-icon"/>
         </div>
         <div class="upload-button-text-div centered">
-          <label for="portrait" class="btn-primary" id="portrait-button">Portraitbild hochladen</label>
-          <FileUpload accept="image/*" :target="portraitUploadUrl" action="POST" style="display: none" id="portrait" v-on:finish="finishUpload('portrait')" />
+          <label for="portrait" id="portrait-button" :class="{ 'btn-primary-outline green-border' : finished_p, 'btn-primary' : !finished_p }">Portraitbild hochladen</label>
+          <input type="file" ref="pic" accept="image/*" style="display: none" id="portrait" v-on:change="uploadPic()" :class="{ 'upload-complete' : finished_p}" />
           <span class="hinweistext">Bitte nutze dein rundes, hochauflösendes Portraitbild.</span>
           <span class="error" id="error-p">Bitte lade ein Portraitbild hoch.</span>
         </div>
@@ -43,68 +43,68 @@
 
 <script>
 import NavBar from "@/elements/NavBar.vue";
-import FileUpload from 'vue-simple-upload/dist/FileUpload.vue'
 import {BIconArrowLeftCircleFill, BIconCameraVideo, BIconPersonBoundingBox} from "bootstrap-icons-vue";
 import router from "@/router";
+import BackendService from "@/services/BackendService";
 
 export default {
   name: "HomeDashboard",
-  data() {
-    return {
-      videoUploadUrl: process.env.VUE_APP_BACKEND_URL + "/video-upload",
-      portraitUploadUrl: process.env.VUE_APP_BACKEND_URL + "/portrait-upload",
-      finished_p: false,
-      finished_v: false
-    }
-  },
   components: {
     NavBar,
-    FileUpload,
     BIconArrowLeftCircleFill,
     BIconCameraVideo,
     BIconPersonBoundingBox
   },
+  data() {
+    return {
+      finished_p: false,
+      finished_v: false
+    }
+  },
   methods: {
-    // https://github.com/saivarunk/vue-simple-upload?tab=readme-ov-file#usage-1
-    finishUpload(id) {
-      const completedUpload = document.getElementById(id);
+    uploadVideo(){
 
-      if (completedUpload && id === "video") {
-        completedUpload.classList.add('upload-complete')
-        document.getElementById("error-v").style.display = "none";
-        document.getElementById("video-button").classList.remove("btn-primary")
-        document.getElementById("video-button").classList.add("btn-primary-outline")
-        document.getElementById("video-button").classList.add("green-border")
+      BackendService.uploadFile(this.$refs.vid.files.item(0)).then(value => {
+        console.log("Datei gespeichert unter: ", value.toString)
+        localStorage.setItem("video_url", value)
+      })
 
-        let videoFile = document.getElementById("video").files[0].name;
-        localStorage.setItem("video", videoFile);
-      }
-      if(completedUpload && id === "portrait"){
-        completedUpload.classList.add('upload-complete')
-        document.getElementById("error-p").style.display = "none";
-        document.getElementById("portrait-button").classList.remove("btn-primary")
-        document.getElementById("portrait-button").classList.add("btn-primary-outline")
-        document.getElementById("portrait-button").classList.add("green-border")
+      document.getElementById("error-v").style.display = "none";
+      this.finished_v = true
+    },
+    uploadPic(){
 
-        let portraitFile = document.getElementById("portrait").files[0].name;
-        localStorage.setItem("portrait", portraitFile);
-      }
+      BackendService.uploadFile(this.$refs.pic.files.item(0)).then(value => {
+        console.log("Datei gespeichert unter: ", value)
+        localStorage.setItem("portrait_url", value)
+      })
 
-      if(id === "video"){ this.finished_v = true }
-      if(id === "portrait"){ this.finished_p = true }
-
+      document.getElementById("error-p").style.display = "none";
+      this.finished_p = true
     },
     routerPush(){
-      if(this.finished_p && this.finished_v){
+      if(localStorage.getItem("finished_p") === "true" && localStorage.getItem("finished_v") === "true"){
         router.push("/contactData")
-      } else if(this.finished_p){
-        document.getElementById("error-v").style.display = "inline";
-      } else if(this.finished_v){
+      } if(!this.finished_p){
         document.getElementById("error-p").style.display = "inline";
-      } else if(!this.finished_v && !this.finished_p){
+      } if(!this.finished_v){
         document.getElementById("error-v").style.display = "inline";
-        document.getElementById("error-p").style.display = "inline";
       }
+    },
+  },
+  watch: {
+    finished_p(newValue){
+      localStorage.setItem("finished_p", newValue)
+    },
+    finished_v(newValue){
+      localStorage.setItem("finished_v", newValue)
+    }
+  },
+  mounted(){
+    if(localStorage.getItem("finished_v") !== "null"){
+      this.finished_v = localStorage.getItem("finished_v")
+    } if(localStorage.getItem("finished_p") !== "null"){
+      this.finished_p = localStorage.getItem("finished_p")
     }
   }
 }

@@ -8,6 +8,11 @@ import router from "@/router";
 
 export default {
   name: 'App',
+  data() {
+    return {
+      isLoading: false
+    }
+  },
   methods: {
     router() {
       return router
@@ -51,10 +56,11 @@ h2 {
   left: 0;
   width: 600px;
   height: 400px;
-  background-image: url('./assets/background.png');
+  background-image: url('../../weview_be/src/main/resources/background.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left bottom;
+  z-index: -1;
 }
 
 .content{

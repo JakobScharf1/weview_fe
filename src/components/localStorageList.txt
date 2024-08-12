@@ -1,6 +1,9 @@
-video                   = Video Dateiname
-portrait                = Portrait Dateiname
+video_url               = Link zum Video im BE
+portrait_url            = Link zum Portrait im BE
 view-type               = candidate || job || personal
+
+viewLink                = Link zum View vom Backend (wenn generiert)
+gifLink                 = Link zum Gif vom Backend (wenn generiert)
 
 job_project             = Projekt-/Job-Titel
 job_region              = Region/Einsatzort
@@ -21,3 +24,13 @@ personal_branche        = Markt
 personal_region         = Region
 personal_contracttype   = Vertragsart/-en
 personal_descr          = Sonstiges
+
+name                    = Name des Consultants
+position                = Position des Consultants
+location                = Standort des Consultants
+tel                     = Telnr. des Consultants
+email                   = Email des Consultants
+linkedin                = Linkedin-Link des Consultants
+
+finished_v              = Video-Upload finished
+finished_p              = Picture-Upload finished
