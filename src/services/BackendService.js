@@ -30,6 +30,12 @@ class BackendService{
         obj.vidLink = localStorage.getItem("video_url")
         obj.picLink = localStorage.getItem("portrait_url")
         obj.weviewType = localStorage.getItem("view-type")
+        obj.name = localStorage.getItem("name")
+        obj.position = localStorage.getItem("position")
+        obj.location = localStorage.getItem("location")
+        obj.tel = localStorage.getItem("tel")
+        obj.mail = localStorage.getItem("email")
+        obj.linkedin = localStorage.getItem("linkedin")
         if(obj.weviewType === "job"){
             obj.pageTitle = localStorage.getItem("job_project")
             obj.region = localStorage.getItem("job_region")
@@ -43,11 +49,13 @@ class BackendService{
         let jsonString = JSON.stringify(obj)
         let requestURI = BACKEND_BASE_URL + "/generate"
         console.log("JSON send: ", jsonString)
-        return axios.post(requestURI, jsonString, {
+        const response = await axios.post(requestURI, jsonString, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
+
+        return response.data.data;
     }
 }
 

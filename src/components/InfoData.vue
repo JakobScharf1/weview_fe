@@ -40,9 +40,11 @@ export default {
   },
   methods: {
     submit() {
-      BackendService.generateHTML().then(
-          router.push("/success")
-      );
+      BackendService.generateHTML().then(response => {
+        console.log("Response: ", response)
+        localStorage.setItem("viewLink", response)
+        router.push("/success")
+      });
     }
   },
 }

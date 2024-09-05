@@ -58,15 +58,19 @@ export default {
   data() {
     return {
       finished_p: false,
-      finished_v: false
+      finished_v: false,
+      staticURL: "http://localhost"
     }
   },
   methods: {
     uploadVideo(){
 
       BackendService.uploadFile(this.$refs.vid.files.item(0)).then(value => {
-        console.log("Datei gespeichert unter: ", value.toString)
-        localStorage.setItem("video_url", value)
+        const correctedJsonString = value.replace(/'/g, '"')
+        const jsonObject = JSON.parse(correctedJsonString)
+        const url = this.staticURL + jsonObject.path
+        console.log("Datei gespeichert unter: ", url)
+        localStorage.setItem("video_url", url)
       })
 
       document.getElementById("error-v").style.display = "none";
@@ -75,8 +79,11 @@ export default {
     uploadPic(){
 
       BackendService.uploadFile(this.$refs.pic.files.item(0)).then(value => {
-        console.log("Datei gespeichert unter: ", value)
-        localStorage.setItem("portrait_url", value)
+        const correctedJsonString = value.replace(/'/g, '"')
+        const jsonObject = JSON.parse(correctedJsonString)
+        const url = this.staticURL + jsonObject.path
+        console.log("Datei gespeichert unter: ", url)
+        localStorage.setItem("portrait_url", url)
       })
 
       document.getElementById("error-p").style.display = "none";
