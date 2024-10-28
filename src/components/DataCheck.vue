@@ -11,7 +11,7 @@
           <span class="contact-label">View-Art: </span>
         </td>
         <td class="sec-col">
-          <span>{{ viewType }}</span>
+          <span style="color:white">{{ viewType }}</span>
         </td>
       </tr>
       <tr>

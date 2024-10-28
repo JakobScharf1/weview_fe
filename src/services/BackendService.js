@@ -8,15 +8,14 @@ class BackendService{
         bodyData.append('file', file)
         bodyData.append('token', token)
         let requestURI = BACKEND_BASE_URL + "/dataUpload"
-        console.log("Übermittelt an: " + requestURI)
         try {
-            const response = await axios.post(requestURI, bodyData, {
+            const res = await axios.post(requestURI, bodyData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            console.log("Response: " + response.data)
-            return response.data.data
+            console.log("DataUpload Response: " + res.data)
+            return res.data.toString()
         } catch (error) {
             console.error("Error uploading file: ", error)
             throw error
