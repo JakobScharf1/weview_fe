@@ -30,8 +30,8 @@ function login() {
                         const permissionUrl = process.env.VUE_APP_BACKEND_URL + "/private/getPermission/" + requestBody.email;
                         axios.get(permissionUrl)
                             .then(response => {
-                                console.log("CheckPermission response: ", response.data.permission)
-                                localStorage.setItem("permission", response.data.permission)
+                                const parsedJson = JSON.parse(response.data.data)
+                                localStorage.setItem("permission", parsedJson.permission)
                                 if (response.data.toString() !== "0" || response.data.toString() !== "-1") {
                                     router.push("/home");
                                 }

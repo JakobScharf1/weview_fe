@@ -7,7 +7,12 @@ class BackendService{
         const bodyData = new FormData()
         bodyData.append('token', token)
         let requestURI = BACKEND_BASE_URL + "/private/verify"
-        axios.post(requestURI, bodyData).then((response) => {
+        let headers = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        axios.post(requestURI, bodyData, headers).then((response) => {
             console.log("verify response: ", response.data)
             if(response.status === 200){
                 return true;
