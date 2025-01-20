@@ -6,18 +6,20 @@
 
 <script>
 import {login} from "@/firebase-config";
+import router from "@/router";
 
 export default {
   name: "NavBarLogin",
   methods: {
-    login() {
-      login()
-      this.$cookies.set("token", localStorage.getItem("token"))
-      this.$cookies.set("email", localStorage.getItem("email"))
-      this.$cookies.set("permission", localStorage.getItem("permission"))
-      localStorage.removeItem("token")
-      localStorage.removeItem("email")
-      localStorage.removeItem("permission")
+    async login() {
+      await login().then((permission) => {
+        if(permission !== "0"){
+          this.$cookies.set("permission", permission)
+          this.$cookies.set("token", localStorage.getItem("token"))
+          this.$cookies.set("email", localStorage.getItem("email"))
+          router.push("/home")
+        }
+      })
     }
   },
 }
