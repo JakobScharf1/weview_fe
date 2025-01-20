@@ -1,4 +1,8 @@
 <template>
+  <div class="full-width-div">
+    <BIconArrowLeftCircleFill class="back-icon" @click="$router.back()"/>
+    <h1>Infos zum Job/Projekt</h1>
+  </div>
   <table>
     <tr>
       <td class="first-col-infodata">
@@ -37,7 +41,7 @@
         <label class="contact-label" id="jobportal-label" for="jobportal-input">Link zum Job im Job-Portal: </label>
       </td>
       <td class="sec-col">
-        <input class="inputfield" id="jobportal-input" v-model="jobportal" type="url" placeholder="https://career-portal.wematch-intern.de/...">
+        <input class="inputfield" id="jobportal-input" v-model="jobportal" type="url" placeholder="https://wematch-jobs.de/...">
       </td>
     </tr>
     <tr>
@@ -60,8 +64,11 @@
 </template>
 
 <script>
+import {BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
+
 export default {
   name: "InputFieldsJob",
+  components: {BIconArrowLeftCircleFill},
   data() {
     return {
       project: "",

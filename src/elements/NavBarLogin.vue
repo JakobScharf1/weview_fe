@@ -12,8 +12,14 @@ export default {
   methods: {
     login() {
       login()
+      this.$cookies.set("token", localStorage.getItem("token"))
+      this.$cookies.set("email", localStorage.getItem("email"))
+      this.$cookies.set("permission", localStorage.getItem("permission"))
+      localStorage.removeItem("token")
+      localStorage.removeItem("email")
+      localStorage.removeItem("permission")
     }
-  }
+  },
 }
 </script>
 

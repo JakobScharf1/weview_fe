@@ -7,12 +7,26 @@
 
 <script>
 import NavBarLogin from "@/elements/NavBarLogin.vue";
+import BackendService from "@/services/BackendService";
+import router from "@/router";
 
 export default {
   name: "SSOLogin",
   components: {
     NavBarLogin
   },
+  beforeMount() {
+    try {
+      if(this.$cookies.get('token')){
+        if(BackendService.verify(this.$cookies.get('token'))){
+          router.push("/home")
+        }
+      }
+    } catch (e) {
+      throw Error;
+    }
+
+  }
 }
 </script>
 

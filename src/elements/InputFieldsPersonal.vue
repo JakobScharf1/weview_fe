@@ -1,4 +1,8 @@
 <template>
+  <div class="full-width-div">
+    <BIconArrowLeftCircleFill class="back-icon" @click="$router.back()"/>
+    <h1>Infos zu dir</h1>
+  </div>
   <table>
     <tr>
       <td class="first-col-infodata">
@@ -36,8 +40,11 @@
 </template>
 
 <script>
+import {BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
+
 export default {
   name: "InputFieldsPersonal",
+  components: {BIconArrowLeftCircleFill},
   data() {
     return {
       branche: "",

@@ -6,10 +6,10 @@
     </div>
 
     <div class="full-width-div link">
-      <p>Link zum WeView: <span>{{ viewLink }}</span></p><BIconCopy @click="copyLink()" class="clickable" />
+      <p>Link zum WeView: <span>{{ viewLink }}</span></p><BIconCopy @click="copyLink()" class="clickable" id="copy-link" />
     </div>
     <div class="full-width-div link">
-      <p>Link zum Video-GIF: <span>{{ gifLink }}</span></p>
+      <p>Video-GIF zum Teilen: <span>{{ gifLink }}</span></p>
     </div>
   </div>
 </template>
@@ -33,7 +33,12 @@ export default {
   methods: {
     copyLink(){
       navigator.clipboard.writeText(this.viewLink)
-      alert()
+      //Makes Copy-Icon green for one second
+      const copyLink = document.getElementById("copy-link")
+      copyLink.style.filter = "invert(23%) sepia(90%) saturate(5184%) hue-rotate(114deg) brightness(94%) contrast(110%)"
+      setTimeout(() =>{
+        copyLink.style.filter = ""
+      }, 500)
     }
   },
   created() {
@@ -56,5 +61,9 @@ export default {
 
 .clickable:hover {
   cursor: pointer;
+}
+
+#copy-link {
+  margin-left: 10px;
 }
 </style>

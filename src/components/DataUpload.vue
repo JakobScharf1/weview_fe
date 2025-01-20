@@ -30,7 +30,7 @@
         <div class="upload-button-text-div centered">
           <label for="portrait" id="portrait-button" :class="{ 'btn-primary-outline green-border' : finished_p, 'btn-primary' : !finished_p }">Portraitbild hochladen</label>
           <input type="file" ref="pic" accept="image/*" style="display: none" id="portrait" v-on:change="uploadPic()" :class="{ 'upload-complete' : finished_p}" />
-          <span class="hinweistext">Bitte nutze dein rundes, hochauflösendes Portraitbild.</span>
+          <span class="hinweistext">Bitte nutze dein rundes, kleines Portraitbild<br/>wie in deiner Email-Signatur.</span>
           <span class="error" id="error-p">Bitte lade ein Portraitbild hoch.</span>
         </div>
       </div>
@@ -64,22 +64,24 @@ export default {
   },
   methods: {
     uploadVideo(){
-
       BackendService.uploadFile(this.$refs.vid.files.item(0)).then(value => {
-        const correctedJsonString = value.replace(/'/g, '"')
+        const correctedJsonString = value.data.replace(/'/g, '"')
         const jsonObject = JSON.parse(correctedJsonString)
         const url = this.staticURL + jsonObject.path
         console.log("Datei gespeichert unter: ", url)
         localStorage.setItem("video_url", url)
-      })
 
-      document.getElementById("error-v").style.display = "none";
-      this.finished_v = true
+        document.getElementById("error-v").style.display = "none";
+        this.finished_v = true
+      }).catch((error) =>{
+        console.error(error);
+        document.getElementById("video-button").style.borderColor = "red";
+      })
     },
     uploadPic(){
 
       BackendService.uploadFile(this.$refs.pic.files.item(0)).then(value => {
-        const correctedJsonString = value.replace(/'/g, '"')
+        const correctedJsonString = value.data.replace(/'/g, '"')
         const jsonObject = JSON.parse(correctedJsonString)
         const url = this.staticURL + jsonObject.path
         console.log("Datei gespeichert unter: ", url)

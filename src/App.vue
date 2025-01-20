@@ -23,6 +23,7 @@ export default {
   },
   created() {
     window.addEventListener('beforeunload', this.clearLocalStorage)
+    console.log("Backend URL: ", process.env.VUE_APP_BACKEND_URL)
   },
   unmounted() {
     window.addEventListener('beforeunload', this.clearLocalStorage)

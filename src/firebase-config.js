@@ -14,18 +14,24 @@ function login() {
             token: token,
             email: result.user.email.toString(),
         }
-        localStorage.clear();
-        localStorage.setItem("token", token);
-        localStorage.setItem("email", result.user.email.toString());
+        localStorage.setItem("token", token)
+        localStorage.setItem("email", result.user.email.toString())
+        let header = {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+        }
 
         try {
-            axios.post(url, requestBody)
+            axios.post(url, requestBody, header)
                 .then(response => {
+                    console.log("signIn response: ", response.data)
                     if (response.status === 200) {
                         const permissionUrl = process.env.VUE_APP_BACKEND_URL + "/private/getPermission/" + requestBody.email;
                         axios.get(permissionUrl)
                             .then(response => {
-                                localStorage.setItem("permission", response.data.toString());
+                                console.log("CheckPermission response: ", response.data.permission)
+                                localStorage.setItem("permission", response.data.permission)
                                 if (response.data.toString() !== "0" || response.data.toString() !== "-1") {
                                     router.push("/home");
                                 }
@@ -35,14 +41,7 @@ function login() {
         } catch(error) {
             console.log("Error: ", error)
         }
-
     }));
 }
 
-function logout() {
-    router.push("/login")
-    localStorage.clear();
-}
-
 export { login };
-export { logout };

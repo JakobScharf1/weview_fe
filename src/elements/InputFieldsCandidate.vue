@@ -1,8 +1,12 @@
 <template>
+  <div class="full-width-div">
+    <BIconArrowLeftCircleFill class="back-icon" @click="$router.back()"/>
+    <h1>Infos zum Kandidaten</h1>
+  </div>
   <table>
     <tr>
       <td class="first-col-infodata">
-        <label class="contact-label" id="name-label" for="name-input">Name*: </label>
+        <label class="contact-label" id="name-label" for="name-input">Vorname*: </label>
       </td>
       <td class="sec-col">
         <input class="inputfield" v-model="name" type="text" id="name-input">
@@ -21,15 +25,10 @@
         <label class="contact-label" id="contracttype-label" for="contracttype-input">Vertragsart*: </label>
       </td>
       <td class="sec-col">
-        <input class="inputfield" id="contracttype-input" v-model="contracttype" type="text">
-      </td>
-    </tr>
-    <tr>
-      <td class="first-col-infodata">
-        <label class="contact-label" id="profilelink-label" for="profilelink-input">Link zum Profil (Xing o.ä.): </label>
-      </td>
-      <td class="sec-col">
-        <input class="inputfield" id="profilelink-input" v-model="profilelink" type="text">
+        <select class="inputfield full-width" id="contracttype-input" v-model="contracttype">
+          <option value="Contract/Freelance">Contract</option>
+          <option value="Perm">Perm</option>
+        </select>
       </td>
     </tr>
     <tr>
@@ -42,7 +41,7 @@
     </tr>
     <tr>
       <td class="first-col-infodata">
-        <label class="contact-label" id="descr-label" for="descr-input">Über das Projekt/den Job*: </label>
+        <label class="contact-label" id="descr-label" for="descr-input">Weitere Informationen: </label>
       </td>
       <td class="sec-col">
         <textarea class="inputfield" id="descr-input" v-model="descr"></textarea>
@@ -52,15 +51,17 @@
 </template>
 
 <script>
+import {BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
+
 export default {
   name: "InputFieldsCandidate",
+  components: {BIconArrowLeftCircleFill},
   data() {
     return {
       name: "",
       region: "",
       contracttype: "",
       skills: "",
-      profilelink: "",
       descr: ""
     }
   },
@@ -73,9 +74,6 @@ export default {
     },
     contracttype(newValue) {
       localStorage.setItem("candidate_contracttype", newValue)
-    },
-    profilelink(newValue) {
-      localStorage.setItem("candidate_profilelink", newValue)
     },
     skills(newValue) {
       localStorage.setItem("candidate_skills", newValue)
@@ -97,5 +95,9 @@ textarea.inputfield {
   width: fit-content;
   text-align: right;
   padding-right: 10px;
+}
+
+.full-width {
+  width: 100%;
 }
 </style>

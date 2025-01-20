@@ -4,6 +4,7 @@ import router from '@/router';
 import cors from 'cors';
 import BounceLoader from 'vue-spinner/src/BounceLoader.vue';
 import firebase from "firebase/compat/app";
+import VueCookies from 'vue-cookies';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCBAEISxcDsr4NI5U80wNs6MeRFWP539HM",
@@ -20,5 +21,6 @@ firebase.initializeApp(firebaseConfig);
 createApp(App)
     .use(router)
     .use(cors)
+    .use(VueCookies)
     .component('bounce-loader', BounceLoader)
     .mount('#app')

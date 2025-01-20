@@ -6,13 +6,17 @@
 </template>
 
 <script>
-import {logout} from "@/firebase-config";
+import router from "@/router";
 
 export default {
   name: "NavBar",
   methods: {
     logout() {
-      logout()
+      localStorage.clear()
+      this.$cookies.remove("token")
+      this.$cookies.remove("email")
+      this.$cookies.remove("permission")
+      router.push("/login")
     }
   }
 }

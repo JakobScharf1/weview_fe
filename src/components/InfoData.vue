@@ -1,10 +1,6 @@
 <template>
   <NavBar />
   <div class="content">
-    <div class="full-width-div">
-      <BIconArrowLeftCircleFill class="back-icon" @click="$router.back()"/>
-      <h1>Individuelle Informationen</h1>
-    </div>
 
     <div v-if="this.viewType === 'job'"><InputFieldsJob /></div>
     <div v-if="this.viewType === 'candidate'"><InputFieldsCandidate /></div>
@@ -17,7 +13,6 @@
 
 <script>
 import NavBar from "@/elements/NavBar.vue";
-import {BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
 import InputFieldsJob from "@/elements/InputFieldsJob.vue";
 import router from "@/router";
 import InputFieldsCandidate from "@/elements/InputFieldsCandidate.vue";
@@ -35,14 +30,19 @@ export default {
     InputFieldsCandidate,
     InputFieldsJob,
     InputFieldsPersonal,
-    BIconArrowLeftCircleFill,
     NavBar
   },
   methods: {
     submit() {
       BackendService.generateHTML().then(response => {
-        console.log("Response: ", response)
+        console.log("generateHTML Response: ", response)
         localStorage.setItem("viewLink", response)
+
+        BackendService.generateGIF().then(response => {
+          console.log("generateGIF Response: ", response)
+          localStorage.setItem("GIF", response)
+        })
+
         router.push("/success")
       });
     }

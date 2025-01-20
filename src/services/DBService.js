@@ -5,8 +5,8 @@ async function checkDb(){
     const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
     let requestURI = BACKEND_BASE_URL + "/db/getuserdata"
     const params = {
-        token: localStorage.getItem("token"),
-        email: localStorage.getItem("email"),
+        token: this.$cookies.get("token"),
+        email: this.$cookies.get("email"),
     }
     console.log("Übermittelt an: " + requestURI)
 
@@ -48,8 +48,8 @@ async function saveUserData(){
     const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
     let requestURI = BACKEND_BASE_URL + "/db/saveuserdata"
     const params = {
-        token: localStorage.getItem("token"),
-        email: localStorage.getItem("email"),
+        token: this.$cookies.get("token"),
+        email: this.$cookies.get("email"),
         name: localStorage.getItem("name"),
         position: localStorage.getItem("position"),
         location: localStorage.getItem("location"),
