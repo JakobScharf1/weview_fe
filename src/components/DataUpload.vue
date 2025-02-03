@@ -12,7 +12,7 @@
           <BIconCameraVideo class="upload-button-icon"/>
         </div>
         <div class="upload-button-text-div centered">
-          <label for="video" id="video-button" :class="{ 'btn-primary-outline green-border' : finished_v, 'btn-primary' : !finished_v }">Video hochladen</label>
+          <label for="video" id="video-button" :class="{ 'btn-primary-outline upload-complete' : finished_v, 'btn-primary' : !finished_v }">Video hochladen</label>
           <input type="file" ref="vid" accept="video/*" style="display: none" id="video" v-on:change="uploadVideo()" :class="{ 'upload-complete' : finished_v }" />
           <span class="hinweistext">Bitte nutze ein hochauflösendes Video.</span>
           <span class="error" id="error-v">Bitte lade ein Video hoch.</span>
@@ -28,8 +28,8 @@
           <BIconPersonBoundingBox class="upload-button-icon"/>
         </div>
         <div class="upload-button-text-div centered">
-          <label for="portrait" id="portrait-button" :class="{ 'btn-primary-outline green-border' : finished_p, 'btn-primary' : !finished_p }">Portraitbild hochladen</label>
-          <input type="file" ref="pic" accept="image/*" style="display: none" id="portrait" v-on:change="uploadPic()" :class="{ 'upload-complete' : finished_p}" />
+          <label for="portrait" id="portrait-button" :class="{ 'btn-primary-outline upload-complete' : finished_p, 'btn-primary' : !finished_p }">Portraitbild hochladen</label>
+          <input type="file" ref="pic" accept="image/*" style="display: none" id="portrait" v-on:change="uploadPic()" :class="{ 'upload-complete' : finished_p }" />
           <span class="hinweistext">Bitte nutze dein rundes, kleines Portraitbild<br/>wie in deiner Email-Signatur.</span>
           <span class="error" id="error-p">Bitte lade ein Portraitbild hoch.</span>
         </div>
@@ -57,64 +57,57 @@ export default {
   },
   data() {
     return {
-      finished_p: false,
-      finished_v: false,
+      finished_v: localStorage.getItem("finished_v") === "true",
+      finished_p: localStorage.getItem("finished_p") === "true",
       staticURL: "http://localhost"
     }
   },
   methods: {
     uploadVideo(){
-      BackendService.uploadFile(this.$refs.vid.files.item(0)).then(value => {
-        const correctedJsonString = value.data.replace(/'/g, '"')
-        const jsonObject = JSON.parse(correctedJsonString)
-        const url = this.staticURL + jsonObject.path
-        console.log("Datei gespeichert unter: ", url)
-        localStorage.setItem("video_url", url)
-
-        document.getElementById("error-v").style.display = "none";
-        this.finished_v = true
+      BackendService.uploadFile(this.$refs.vid.files.item(0), this.$cookies.get("token")).then(value => {
+        if(value){
+          document.getElementById("error-v").style.display = "none";
+          this.finished_v = true
+        } else {
+          document.getElementById("video-button").style.borderColor = "red";
+        }
       }).catch((error) =>{
         console.error(error);
         document.getElementById("video-button").style.borderColor = "red";
       })
     },
-    uploadPic(){
-
-      BackendService.uploadFile(this.$refs.pic.files.item(0)).then(value => {
-        const correctedJsonString = value.data.replace(/'/g, '"')
-        const jsonObject = JSON.parse(correctedJsonString)
-        const url = this.staticURL + jsonObject.path
-        console.log("Datei gespeichert unter: ", url)
-        localStorage.setItem("portrait_url", url)
+    async uploadPic(){
+      await BackendService.uploadFile(this.$refs.pic.files.item(0), this.$cookies.get("token")).then(value => {
+        console.log("value: ", value)
+        if(value){
+          document.getElementById("error-p").style.display = "none";
+          this.finished_p = true
+        } else {
+          document.getElementById("portrait-button").style.borderColor = "red";
+        }
       })
-
-      document.getElementById("error-p").style.display = "none";
-      this.finished_p = true
     },
     routerPush(){
       if(localStorage.getItem("finished_p") === "true" && localStorage.getItem("finished_v") === "true"){
         router.push("/contactData")
-      } if(!this.finished_p){
+      } if(localStorage.getItem("finished_p") !== "true"){
         document.getElementById("error-p").style.display = "inline";
-      } if(!this.finished_v){
+      } if(localStorage.getItem("finished_v") !== "true"){
         document.getElementById("error-v").style.display = "inline";
       }
     },
   },
   watch: {
-    finished_p(newValue){
-      localStorage.setItem("finished_p", newValue)
+    finished_v(newValue) {
+      localStorage.setItem("finished_v", newValue.toString())
     },
-    finished_v(newValue){
-      localStorage.setItem("finished_v", newValue)
+    finished_p(newValue) {
+      localStorage.setItem("finished_p", newValue.toString())
     }
   },
-  mounted(){
-    if(localStorage.getItem("finished_v") !== "null"){
-      this.finished_v = localStorage.getItem("finished_v")
-    } if(localStorage.getItem("finished_p") !== "null"){
-      this.finished_p = localStorage.getItem("finished_p")
-    }
+  beforeMount() {
+    localStorage.setItem("finished_v", "false")
+    localStorage.setItem("finished_p", "false")
   }
 }
 
@@ -158,7 +151,7 @@ export default {
 }
 
 .upload-complete {
-  border: 1px solid green;
+  border: 1px solid green!important;
 }
 
 #first-one {

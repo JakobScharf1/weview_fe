@@ -163,9 +163,5 @@ hr {
   align-items: center;
 }
 
-.green-border {
-  border: 1px solid green;
-}
-
 
 </style>

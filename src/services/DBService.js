@@ -1,12 +1,12 @@
 import axios from "axios";
 
-async function checkDb(){
+async function checkDb(token, email){
 
     const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
     let requestURI = BACKEND_BASE_URL + "/db/getuserdata"
     const params = {
-        token: this.$cookies.get("token"),
-        email: this.$cookies.get("email"),
+        token: token,
+        email: email,
     }
     console.log("Übermittelt an: " + requestURI)
 
@@ -44,12 +44,12 @@ async function checkDb(){
     }
 }
 
-async function saveUserData(){
+async function saveUserData(token, email){
     const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
     let requestURI = BACKEND_BASE_URL + "/db/saveuserdata"
     const params = {
-        token: this.$cookies.get("token"),
-        email: this.$cookies.get("email"),
+        token: token,
+        email: email,
         name: localStorage.getItem("name"),
         position: localStorage.getItem("position"),
         location: localStorage.getItem("location"),

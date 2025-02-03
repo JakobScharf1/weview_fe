@@ -22,9 +22,8 @@ class BackendService{
         })
     }
 
-    async uploadFile(file){
+    async uploadFile(file, token){
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
-        const token = this.$cookies.get("token")
         const bodyData = new FormData()
         bodyData.append('file', file)
         bodyData.append('token', token)
@@ -34,19 +33,24 @@ class BackendService{
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        }).then((response) => {
-            console.log("DataUpload Response: " + response)
-            return response.data
+        }).then(response => {
+            if(file.type.startsWith("video")){
+                localStorage.setItem("vidId", response.data.data.id)
+                localStorage.setItem("video_url", response.data.data.url)
+            } else if(file.type.startsWith("image")){
+                localStorage.setItem("portrait_url", response.data.data.url)
+            }
+            return response.data.success
         }).catch((error) => {
             console.error("Error uploading file: ", error);
             throw error;
         });
     }
 
-    async generateHTML(){
+    async generateHTML(token, email){
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
         let obj = {}
-        obj.token = this.$cookies.get("token")
+        obj.token = token
         obj.vidLink = localStorage.getItem("video_url")
         obj.picLink = localStorage.getItem("portrait_url")
         obj.weviewType = localStorage.getItem("view-type")
@@ -54,7 +58,7 @@ class BackendService{
         obj.position = localStorage.getItem("position")
         obj.location = localStorage.getItem("location")
         obj.tel = localStorage.getItem("tel")
-        obj.mail = this.$cookies.get("email")
+        obj.mail = email
         obj.linkedin = localStorage.getItem("linkedin")
         if(obj.weviewType === "job"){
             obj.pageTitle = localStorage.getItem("job_project")
@@ -89,20 +93,21 @@ class BackendService{
         return response.data.data;
     }
 
-    async generateGIF(){
+    async generateGIF(token){
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
 
-        let obj = {}
-        obj.token = this.$cookies.get("token")
-        obj.vidLink = localStorage.getItem("video_url")
-        let jsonString = JSON.stringify(obj)
+        const formData = new FormData()
+        formData.append("token", token)
+        formData.append("fileId", localStorage.getItem("vidId"))
+
         let requestURI = BACKEND_BASE_URL + "/gif/generate"
-        const response = await axios.post(requestURI, jsonString, {
+        const response = await axios.post(requestURI, formData, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             }
         })
         console.log("Response generateGIF: " + response.data)
+
 
         return null;
     }

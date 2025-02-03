@@ -82,7 +82,7 @@ export default {
       }
     },
     saveData() {
-      saveUserData()
+      saveUserData(this.$cookies.get("token"), this.$cookies.get("email"))
     },
 
     inputValidator() {
@@ -125,7 +125,7 @@ export default {
   },
   async mounted() {
     try {
-      await checkDb().then(dbData => {
+      await checkDb(this.$cookies.get("token"), this.$cookies.get("email")).then(dbData => {
         if (dbData.name !== "undefined" && dbData !== null && dbData !== "exit") {
           this.name = dbData.name
           this.position = dbData.position

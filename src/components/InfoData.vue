@@ -34,11 +34,11 @@ export default {
   },
   methods: {
     submit() {
-      BackendService.generateHTML().then(response => {
+      BackendService.generateHTML(this.$cookies.get("token"), this.$cookies.get("email")).then(response => {
         console.log("generateHTML Response: ", response)
         localStorage.setItem("viewLink", response)
 
-        BackendService.generateGIF().then(response => {
+        BackendService.generateGIF(this.$cookies.get("token")).then(response => {
           console.log("generateGIF Response: ", response)
           localStorage.setItem("GIF", response)
         })
