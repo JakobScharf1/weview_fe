@@ -57,7 +57,7 @@
 import {BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
 import NavBar from "@/elements/NavBar.vue";
 import router from "@/router";
-import {checkDb, saveUserData} from "@/services/DBService.js"
+import BackendService from "@/services/BackendService.js"
 
 export default {
   name: "ContactData",
@@ -82,7 +82,7 @@ export default {
       }
     },
     saveData() {
-      saveUserData(this.$cookies.get("token"), this.$cookies.get("email"))
+      BackendService.saveUserData(this.$cookies.get("email"), this.$cookies.get("token"))
     },
 
     inputValidator() {
@@ -125,22 +125,15 @@ export default {
   },
   async mounted() {
     try {
-      await checkDb(this.$cookies.get("token"), this.$cookies.get("email")).then(dbData => {
-        if (dbData.name !== "undefined" && dbData !== null && dbData !== "exit") {
-          this.name = dbData.name
-          this.position = dbData.position
-          this.location = dbData.location
-          this.tel = dbData.tel
-          this.linkedin = dbData.linkedin
+      await BackendService.getUserData(this.$cookies.get("email"), this.$cookies.get("token")).then(data => {
+        if (localStorage.getItem("name") !== "undefined" && data !== null) {
+          this.name = localStorage.getItem("name")
+          this.position = localStorage.getItem("position")
+          this.location = localStorage.getItem("location")
+          this.tel = localStorage.getItem("tel")
+          this.linkedin = localStorage.getItem("linkedin")
 
-          console.log(dbData.name + "\n" + dbData.position + "\n" + dbData.location + "\n" + dbData.tel + "\n" + dbData.linkedin)
-
-          localStorage.setItem("name", this.name)
-          localStorage.setItem("position", this.position)
-          localStorage.setItem("location", this.location)
-          localStorage.setItem("tel", this.tel)
-          localStorage.setItem("linkedin", this.linkedin)
-        } else if(dbData === null){
+        } else {
           this.noDbData = true
         }
       })

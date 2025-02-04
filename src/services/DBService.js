@@ -1,4 +1,4 @@
-import axios from "axios";
+/*import axios from "axios";
 
 async function checkDb(token, email){
 
@@ -71,4 +71,4 @@ async function saveUserData(token, email){
     }
 }
 
-export { checkDb, saveUserData }
+export { checkDb, saveUserData }*/

@@ -35,10 +35,11 @@ class BackendService{
             }
         }).then(response => {
             if(file.type.startsWith("video")){
-                localStorage.setItem("vidId", response.data.data.id)
-                localStorage.setItem("video_url", response.data.data.url)
+                localStorage.setItem("vidId", response.headers.get("id"))
+                localStorage.setItem("video_url", response.headers.get("url"))
+                console.log("uploadFile response: ", response.data)
             } else if(file.type.startsWith("image")){
-                localStorage.setItem("portrait_url", response.data.data.url)
+                localStorage.setItem("portrait_url", response.headers.get("url"))
             }
             return response.data.success
         }).catch((error) => {
@@ -110,6 +111,56 @@ class BackendService{
 
 
         return null;
+    }
+
+    async getUserData(email, token){
+        const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
+
+        let requestURI = BACKEND_BASE_URL + "/user/" + email
+
+        const response = await axios.get(requestURI, {
+            headers: {
+                'Authorization': token
+            }
+        })
+
+        if(response.status === 200){
+            const json = JSON.parse(response.data.data)
+            localStorage.setItem("portrait_url", json.picLink)
+            localStorage.setItem("name", json.name)
+            localStorage.setItem("position", json.position)
+            localStorage.setItem("location", json.location)
+            localStorage.setItem("tel", json.tel)
+            localStorage.setItem("linkedin", json.linkedin)
+        }
+    }
+
+    async saveUserData(email, token){
+        const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
+        let requestURI = BACKEND_BASE_URL + "/user/" + email
+
+        let obj = {}
+        obj.picLink = localStorage.getItem("portrait_url")
+        obj.name = localStorage.getItem("name")
+        obj.position = localStorage.getItem("position")
+        obj.tel = localStorage.getItem("tel")
+        obj.location = localStorage.getItem("location")
+        obj.linkedin = localStorage.getItem("linkedin")
+
+        let jsonString = JSON.stringify(obj)
+        const response = await axios.post(requestURI, jsonString, {
+            headers: {
+                "Authorization": token,
+                "Content-Type": "application/json"
+            }
+        })
+
+        if(response.status === 200){
+            console.log("User " + localStorage.getItem("name") + " stored in DB successfully.")
+        } else {
+            console.error("The server responded with a ", response.status)
+        }
+
     }
 }
 
