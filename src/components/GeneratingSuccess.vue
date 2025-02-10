@@ -9,7 +9,7 @@
       <p>Link zum WeView: <span>{{ viewLink }}</span></p><BIconCopy @click="copyLink()" class="clickable" id="copy-link" />
     </div>
     <div class="full-width-div link">
-      <p>Video-GIF zum Teilen: <span>{{ gifLink }}</span></p>
+      <p>Video-GIF zum Teilen: <span></span><a :href="viewLink"><img :src="gifLink" alt="GIF" height="150px"></a></p><BIconCopy @click="copyGif()" class="clickable" id="copy-gif"></BIconCopy>
     </div>
   </div>
 </template>
@@ -35,6 +35,21 @@ export default {
       navigator.clipboard.writeText(this.viewLink)
       //Makes Copy-Icon green for one second
       const copyLink = document.getElementById("copy-link")
+      copyLink.style.filter = "invert(23%) sepia(90%) saturate(5184%) hue-rotate(114deg) brightness(94%) contrast(110%)"
+      setTimeout(() =>{
+        copyLink.style.filter = ""
+      }, 500)
+    },
+    async copyGif() {
+      const htmlContent = "<a href='" + this.viewLink + "'><img src='" + this.gifLink + "' alt='GIF' height='150px'></a>"
+      const blob = new Blob([htmlContent], { type: "text/html"})
+      const clipboardItem = new ClipboardItem({"text/html": blob})
+      try {
+        await navigator.clipboard.write([clipboardItem])
+      } catch (error) {
+        console.error("Fehler beim Kopieren des GIFs: ", error)
+      }
+      const copyLink = document.getElementById("copy-gif")
       copyLink.style.filter = "invert(23%) sepia(90%) saturate(5184%) hue-rotate(114deg) brightness(94%) contrast(110%)"
       setTimeout(() =>{
         copyLink.style.filter = ""

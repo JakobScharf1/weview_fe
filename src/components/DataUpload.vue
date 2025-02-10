@@ -12,8 +12,12 @@
           <BIconCameraVideo class="upload-button-icon"/>
         </div>
         <div class="upload-button-text-div centered">
-          <label for="video" id="video-button" :class="{ 'btn-primary-outline upload-complete' : finished_v, 'btn-primary' : !finished_v }">Video hochladen</label>
-          <input type="file" ref="vid" accept="video/*" style="display: none" id="video" v-on:change="uploadVideo()" :class="{ 'upload-complete' : finished_v }" />
+          <label for="video" id="video-button" :class="{ 'btn-primary-outline upload-complete' : finished_v, 'btn-primary' : !finished_v }"><span v-if="!this.isLoading">
+            Video hochladen
+          </span>
+            <beat-loader v-if="this.isLoading" color="#000"></beat-loader>
+          </label>
+          <input v-if="!this.isLoading" type="file" ref="vid" accept="video/*" style="display: none" id="video" v-on:change="uploadVideo()" :class="{ 'upload-complete' : finished_v }" />
           <span class="hinweistext">Bitte nutze ein hochauflösendes Video.</span>
           <span class="error" id="error-v">Bitte lade ein Video hoch.</span>
         </div>
@@ -53,39 +57,41 @@ export default {
     NavBar,
     BIconArrowLeftCircleFill,
     BIconCameraVideo,
-    BIconPersonBoundingBox
+    BIconPersonBoundingBox,
   },
   data() {
     return {
       finished_v: localStorage.getItem("finished_v") === "true",
       finished_p: localStorage.getItem("finished_p") === "true",
-      staticURL: "http://localhost"
+      isLoading: false
     }
   },
   methods: {
     uploadVideo(){
+      this.isLoading = true
       BackendService.uploadFile(this.$refs.vid.files.item(0), this.$cookies.get("token")).then(value => {
         if(value){
           document.getElementById("error-v").style.display = "none";
           this.finished_v = true
+          this.isLoading = false
         } else {
           document.getElementById("video-button").style.borderColor = "red";
+          this.isLoading = false
         }
       }).catch((error) =>{
         console.error(error);
         document.getElementById("video-button").style.borderColor = "red";
+        this.isLoading = false
       })
     },
     async uploadPic(){
-      await BackendService.uploadFile(this.$refs.pic.files.item(0), this.$cookies.get("token")).then(value => {
-        console.log("value: ", value)
-        if(value){
-          document.getElementById("error-p").style.display = "none";
-          this.finished_p = true
-        } else {
-          document.getElementById("portrait-button").style.borderColor = "red";
-        }
-      })
+      const value = await BackendService.uploadFile(this.$refs.pic.files.item(0), this.$cookies.get("token"));
+      if(value){
+        document.getElementById("error-p").style.display = "none";
+        this.finished_p = true
+      } else {
+        document.getElementById("portrait-button").style.border = "2px solid red"
+      }
     },
     routerPush(){
       if(localStorage.getItem("finished_p") === "true" && localStorage.getItem("finished_v") === "true"){

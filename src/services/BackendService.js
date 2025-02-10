@@ -29,23 +29,25 @@ class BackendService{
         bodyData.append('token', token)
         let requestURI = BACKEND_BASE_URL + "/dataUpload"
 
-        return axios.post(requestURI, bodyData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+        try {
+            const response = await axios.post(requestURI, bodyData);
+            if (response.status === 200){
+                console.log("response data: ", response)
+                const json = JSON.parse(response.data.data)
+                if (file.type.startsWith("video")){
+                    localStorage.setItem("vidId", json.id)
+                    localStorage.setItem("video_url", json.url)
+                    localStorage.setItem("gifLink", json.gif_url)
+                } else if(file.type.startsWith("image")){
+                    localStorage.setItem("portrait_url", json.url)
+                }
+                return true;
+            } else {
+                return false;
             }
-        }).then(response => {
-            if(file.type.startsWith("video")){
-                localStorage.setItem("vidId", response.headers.get("id"))
-                localStorage.setItem("video_url", response.headers.get("url"))
-                console.log("uploadFile response: ", response.data)
-            } else if(file.type.startsWith("image")){
-                localStorage.setItem("portrait_url", response.headers.get("url"))
-            }
-            return response.data.success
-        }).catch((error) => {
-            console.error("Error uploading file: ", error);
-            throw error;
-        });
+        } catch (error) {
+            throw new error;
+        }
     }
 
     async generateHTML(token, email){
@@ -92,25 +94,6 @@ class BackendService{
         });
 
         return response.data.data;
-    }
-
-    async generateGIF(token){
-        const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
-
-        const formData = new FormData()
-        formData.append("token", token)
-        formData.append("fileId", localStorage.getItem("vidId"))
-
-        let requestURI = BACKEND_BASE_URL + "/gif/generate"
-        const response = await axios.post(requestURI, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        console.log("Response generateGIF: " + response.data)
-
-
-        return null;
     }
 
     async getUserData(email, token){

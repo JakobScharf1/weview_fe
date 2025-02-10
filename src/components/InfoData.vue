@@ -38,11 +38,6 @@ export default {
         console.log("generateHTML Response: ", response)
         localStorage.setItem("viewLink", response)
 
-        BackendService.generateGIF(this.$cookies.get("token")).then(response => {
-          console.log("generateGIF Response: ", response)
-          localStorage.setItem("GIF", response)
-        })
-
         router.push("/success")
       });
     }

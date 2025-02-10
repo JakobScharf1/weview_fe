@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from '@/router';
 import cors from 'cors';
-import BounceLoader from 'vue-spinner/src/BounceLoader.vue';
+import BeatLoader from 'vue-spinner/src/BeatLoader.vue';
 import firebase from "firebase/compat/app";
 import VueCookies from 'vue-cookies';
 
@@ -22,5 +22,5 @@ createApp(App)
     .use(router)
     .use(cors)
     .use(VueCookies)
-    .component('bounce-loader', BounceLoader)
+    .component('beat-loader', BeatLoader)
     .mount('#app')
