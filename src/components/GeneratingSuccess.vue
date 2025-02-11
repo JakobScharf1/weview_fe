@@ -1,15 +1,19 @@
 <template>
+  <UserVerification />
   <NavBar />
   <div class="content">
     <div class="full-width-div">
       <h1>Dein WeView wurde erfolgreich erstellt!</h1>
     </div>
 
-    <div class="full-width-div link">
-      <p>Link zum WeView: <span>{{ viewLink }}</span></p><BIconCopy @click="copyLink()" class="clickable" id="copy-link" />
+    <div class="full-width-div link" id="gif-link-container">
+      <p style="margin:0">GIF-Vorschau zum Teilen:</p><BIconCopy @click="copyGif()" class="clickable" id="copy-gif"></BIconCopy>
     </div>
-    <div class="full-width-div link">
-      <p>Video-GIF zum Teilen: <span></span><a :href="viewLink"><img :src="gifLink" alt="GIF" height="150px"></a></p><BIconCopy @click="copyGif()" class="clickable" id="copy-gif"></BIconCopy>
+    <div class="hinweis-container">
+      <p id="gif-hinweis">Das GIF ist nur per Email, LinkedIn o.ä. teilbar. Es kann sein, dass es bei vielen Websites nicht richtig funktioniert.</p>
+    </div>
+    <div class="full-width-div link second">
+      <p>Link zum WeView: <span>{{ viewLink }}</span></p><BIconCopy @click="copyLink()" class="clickable" id="copy-link" />
     </div>
   </div>
 </template>
@@ -17,6 +21,7 @@
 <script>
 import NavBar from "@/elements/NavBar.vue";
 import {BIconCopy} from "bootstrap-icons-vue";
+import UserVerification from "@/elements/UserVerification.vue";
 
 export default {
   name: "GeneratingSuccess",
@@ -27,6 +32,7 @@ export default {
     }
   },
   components: {
+    UserVerification,
     NavBar,
     BIconCopy
   },
@@ -41,7 +47,7 @@ export default {
       }, 500)
     },
     async copyGif() {
-      const htmlContent = "<a href='" + this.viewLink + "'><img src='" + this.gifLink + "' alt='GIF' height='150px'></a>"
+      const htmlContent = "<a href='" + this.viewLink + "'><img src='" + this.gifLink + "' alt='GIF' height='150px' target='_blank'></a>"
       const blob = new Blob([htmlContent], { type: "text/html"})
       const clipboardItem = new ClipboardItem({"text/html": blob})
       try {
@@ -63,6 +69,11 @@ export default {
     if(localStorage.getItem('gifLink')) {
       this.gifLink = localStorage.getItem("gifLink")
     }
+  },
+  beforeRouteLeave() {
+    const token = localStorage.getItem("token")
+    localStorage.clear()
+    localStorage.setItem("token", token)
   }
 }
 
@@ -72,13 +83,26 @@ export default {
 .link {
   color: white;
   font-size: x-large;
+  margin-top: 5em;
 }
 
 .clickable:hover {
   cursor: pointer;
 }
 
-#copy-link {
+#copy-link, #copy-gif {
   margin-left: 10px;
+}
+
+#gif-hinweis {
+  font-size: small;
+}
+
+.hinweis-container {
+  color: white;
+}
+
+.second {
+  font-size: large;
 }
 </style>

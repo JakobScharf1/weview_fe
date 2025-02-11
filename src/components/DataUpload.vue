@@ -1,4 +1,5 @@
 <template>
+  <UserVerification />
   <NavBar />
   <div class="content">
     <div class="full-width-div">
@@ -29,7 +30,8 @@
     <div class="dataupload-container centered">
       <div class="upload-button">
         <div class="upload-button-icon-div centered">
-          <BIconPersonBoundingBox class="upload-button-icon"/>
+          <img v-if="this.portraitUrl !== ''" :src="this.portraitUrl" alt="portrait" style="height:5em">
+          <BIconPersonBoundingBox v-else class="upload-button-icon"/>
         </div>
         <div class="upload-button-text-div centered">
           <label for="portrait" id="portrait-button" :class="{ 'btn-primary-outline upload-complete' : finished_p, 'btn-primary' : !finished_p }">Portraitbild hochladen</label>
@@ -50,10 +52,12 @@ import NavBar from "@/elements/NavBar.vue";
 import {BIconArrowLeftCircleFill, BIconCameraVideo, BIconPersonBoundingBox} from "bootstrap-icons-vue";
 import router from "@/router";
 import BackendService from "@/services/BackendService";
+import UserVerification from "@/elements/UserVerification.vue";
 
 export default {
   name: "HomeDashboard",
   components: {
+    UserVerification,
     NavBar,
     BIconArrowLeftCircleFill,
     BIconCameraVideo,
@@ -63,13 +67,14 @@ export default {
     return {
       finished_v: localStorage.getItem("finished_v") === "true",
       finished_p: localStorage.getItem("finished_p") === "true",
-      isLoading: false
+      isLoading: false,
+      portraitUrl: ""
     }
   },
   methods: {
     uploadVideo(){
       this.isLoading = true
-      BackendService.uploadFile(this.$refs.vid.files.item(0), this.$cookies.get("token")).then(value => {
+      BackendService.uploadFile(this.$refs.vid.files.item(0), this.$cookies.get("token"), this.$cookies.get("email")).then(value => {
         if(value){
           document.getElementById("error-v").style.display = "none";
           this.finished_v = true
@@ -85,10 +90,11 @@ export default {
       })
     },
     async uploadPic(){
-      const value = await BackendService.uploadFile(this.$refs.pic.files.item(0), this.$cookies.get("token"));
+      const value = await BackendService.uploadFile(this.$refs.pic.files.item(0), this.$cookies.get("token"), this.$cookies.get("email"));
       if(value){
         document.getElementById("error-p").style.display = "none";
         this.finished_p = true
+        this.portraitUrl = localStorage.getItem("portrait_url")
       } else {
         document.getElementById("portrait-button").style.border = "2px solid red"
       }
@@ -112,8 +118,15 @@ export default {
     }
   },
   beforeMount() {
-    localStorage.setItem("finished_v", "false")
-    localStorage.setItem("finished_p", "false")
+    if(localStorage.getItem("portrait_url") === null){
+      const email = this.$cookies.get("email")
+      const token = this.$cookies.get("token")
+      BackendService.getUserPortrait(email, token)
+      if(localStorage.getItem("portrait_url") !== null){
+        this.finished_p = true;
+        this.portraitUrl = localStorage.getItem("portrait_url")
+      }
+    }
   }
 }
 

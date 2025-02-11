@@ -1,4 +1,5 @@
 <template>
+  <UserVerification />
   <NavBar />
   <div class="content">
 
@@ -18,6 +19,7 @@ import router from "@/router";
 import InputFieldsCandidate from "@/elements/InputFieldsCandidate.vue";
 import InputFieldsPersonal from "@/elements/InputFieldsPersonal.vue";
 import BackendService from "@/services/BackendService";
+import UserVerification from "@/elements/UserVerification.vue";
 
 export default {
   name: "InfoData",
@@ -27,6 +29,7 @@ export default {
     }
   },
   components: {
+    UserVerification,
     InputFieldsCandidate,
     InputFieldsJob,
     InputFieldsPersonal,

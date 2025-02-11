@@ -1,9 +1,11 @@
 <template>
+  <UserVerification />
   <NavBarDashboard />
   <div class="content">
     <div class="full-width-div">
       <h1>Deine WeViews</h1>
     </div>
+    <DashboardUI />
     <div class="full-width-div margin-topper">
       <button class="btn-primary" @click="$router.push('/chooseViewType')">
         <BIconPlus id="plus-icon-dashboard" />
@@ -16,12 +18,16 @@
 <script>
 import NavBarDashboard from "@/elements/NavBarDashboard.vue";
 import {BIconPlus} from "bootstrap-icons-vue";
+import UserVerification from "@/elements/UserVerification.vue";
+import DashboardUI from "@/elements/DashboardUI.vue";
 
 export default {
   name: "HomeDashboard",
   components: {
+    UserVerification,
     NavBarDashboard,
-    BIconPlus
+    BIconPlus,
+    DashboardUI
   },
 }
 </script>

@@ -1,4 +1,5 @@
 <template>
+  <UserVerification />
   <NavBar />
   <div class="content">
     <div class="full-width-div">
@@ -58,6 +59,7 @@ import {BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
 import NavBar from "@/elements/NavBar.vue";
 import router from "@/router";
 import BackendService from "@/services/BackendService.js"
+import UserVerification from "@/elements/UserVerification.vue";
 
 export default {
   name: "ContactData",
@@ -72,6 +74,7 @@ export default {
     }
   },
   components: {
+    UserVerification,
     NavBar,
     BIconArrowLeftCircleFill
   },

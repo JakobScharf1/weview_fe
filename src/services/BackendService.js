@@ -12,21 +12,25 @@ class BackendService{
                 "Content-Type": "application/json"
             }
         }
-        axios.post(requestURI, bodyData, headers).then((response) => {
-            console.log("verify response: ", response.data)
-            if(response.status === 200){
-                return true;
-            } else {
-                return false;
-            }
-        })
+        try {
+            axios.post(requestURI, bodyData, headers).then((response) => {
+                if(response.status === 200){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+        } catch (error) {
+            return false;
+        }
     }
 
-    async uploadFile(file, token){
+    async uploadFile(file, token, email){
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
         const bodyData = new FormData()
         bodyData.append('file', file)
         bodyData.append('token', token)
+        bodyData.append('email', email)
         let requestURI = BACKEND_BASE_URL + "/dataUpload"
 
         try {
@@ -96,6 +100,36 @@ class BackendService{
         return response.data.data;
     }
 
+    async getUserPortrait(email, token) {
+        const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
+        let requestURI = BACKEND_BASE_URL + "/user/" + email
+        const response = await axios.get(requestURI, {
+            headers: {
+                'Authorization': token
+            }
+        })
+        if(response.status === 200){
+            const json = JSON.parse(response.data.data)
+            localStorage.setItem("portrait_url", json.picLink)
+            console.log("Portrait URL: ", json.picLink)
+        }
+    }
+
+    async getUserWeviews(email, token) {
+        const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
+        let requestURI = BACKEND_BASE_URL + "/user/" + email + "/views"
+        const response = await axios.get(requestURI, {
+            headers: {
+                'Authorization': token
+            },
+        })
+        if(response.status === 200){
+            const json = JSON.parse(response.data.data)
+            console.log(JSON.parse(json.viewArray.toString()))
+            return json.viewArray
+        }
+    }
+
     async getUserData(email, token){
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
 
@@ -109,7 +143,6 @@ class BackendService{
 
         if(response.status === 200){
             const json = JSON.parse(response.data.data)
-            localStorage.setItem("portrait_url", json.picLink)
             localStorage.setItem("name", json.name)
             localStorage.setItem("position", json.position)
             localStorage.setItem("location", json.location)

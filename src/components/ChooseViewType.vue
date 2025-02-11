@@ -1,4 +1,5 @@
 <template>
+  <UserVerification />
   <NavBar />
   <div class="content">
     <div class="full-width-div">
@@ -52,6 +53,7 @@
 import NavBar from "@/elements/NavBar.vue";
 import {BIconPerson, BIconBriefcase, BIconPersonSquare, BIconArrowLeftCircleFill} from "bootstrap-icons-vue";
 import router from "@/router";
+import UserVerification from "@/elements/UserVerification.vue";
 
 export default {
   name: "ChooseViewType",
@@ -61,6 +63,7 @@ export default {
     }
   },
   components: {
+    UserVerification,
     BIconArrowLeftCircleFill,
     NavBar,
     BIconPerson,
