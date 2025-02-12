@@ -1,12 +1,16 @@
 <template>
   <div class="nocontent" v-if="views.length === 0">
-    <p>Noch keine WeView vorhanden.</p>
+    <p class="isempty-text">Noch keine WeView vorhanden.</p>
   </div>
   <div v-else class="grid-container">
     <div v-for="(item, index) in views" :key="index" class="grid-item">
-      <a target="_blank" :href="item.link">
-        <img :src="item.gifLink" alt="gif" class="gifPreview">
-      </a>
+      <div class="gif-container">
+        <a target="_blank" :href="item.link">
+          <img :src="item.gifLink" alt="gif" class="gifPreview">
+        </a>
+        <span class="title">{{ item.title }}</span>
+        <span class="created">Von: {{ item.created }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -27,8 +31,11 @@ export default {
       const responseJson = JSON.parse(response.toString())
       this.views = responseJson.map(item => ({
         link: item.link,
-        gifLink: item.gifLink
+        gifLink: item.gifLink,
+        title: item.title,
+        created: item.created
       }))
+
     })
     console.log(this.views)
   }
@@ -46,13 +53,30 @@ export default {
 
 .grid-item {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: start;
+  align-items: start;
 }
 
 .gifPreview {
   width: 100%;
   max-width: 150px;
   height: auto;
+}
+
+.isempty-text {
+  color: white;
+}
+
+.gif-container {
+  color: white;
+  display: grid;
+}
+
+.title {
+  font-family: 'Jost-3', sans-serif;
+}
+
+.created {
+  font-size: small;
 }
 </style>

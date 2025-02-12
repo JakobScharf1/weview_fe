@@ -1,6 +1,7 @@
 video_url               = Link zum Video im BE
 portrait_url            = Link zum Portrait im BE
 view-type               = candidate || job || personal
+view_id                 = Id des WeViews für die Dashboard-Funktionalität
 
 viewLink                = Link zum View vom Backend (wenn generiert)
 gifLink                 = Link zum Gif vom Backend (wenn generiert)
@@ -16,7 +17,6 @@ job_descr               = Über das Projekt/den Job
 candidate_name          = Name
 candidate_region        = Region/Einsatzort
 candidate_contracttype  = Vertragsart
-candidate_profilelink   = Link zum Profil (Xing o.ä.)
 candidate_skills        = Skills
 candidate_descr         = Rahmenbedingungen
 

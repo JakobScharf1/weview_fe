@@ -39,8 +39,8 @@ class BackendService{
                 console.log("response data: ", response)
                 const json = JSON.parse(response.data.data)
                 if (file.type.startsWith("video")){
-                    localStorage.setItem("vidId", json.id)
-                    localStorage.setItem("video_url", json.url)
+                    localStorage.setItem("view_id", json.view_id)
+                    localStorage.setItem("video_url", json.vid_url)
                     localStorage.setItem("gifLink", json.gif_url)
                 } else if(file.type.startsWith("image")){
                     localStorage.setItem("portrait_url", json.url)
@@ -58,6 +58,7 @@ class BackendService{
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
         let obj = {}
         obj.token = token
+        obj.view_id = localStorage.getItem("view_id")
         obj.vidLink = localStorage.getItem("video_url")
         obj.picLink = localStorage.getItem("portrait_url")
         obj.weviewType = localStorage.getItem("view-type")
@@ -143,11 +144,13 @@ class BackendService{
 
         if(response.status === 200){
             const json = JSON.parse(response.data.data)
-            localStorage.setItem("name", json.name)
-            localStorage.setItem("position", json.position)
-            localStorage.setItem("location", json.location)
-            localStorage.setItem("tel", json.tel)
-            localStorage.setItem("linkedin", json.linkedin)
+            console.log("User Data: ", json)
+
+            const params = ["name", "position", "location", "tel", "linkedin"]
+            params.forEach(key => {
+                localStorage.setItem(key, json[key] ?? "");
+            });
+
         }
     }
 
@@ -172,13 +175,12 @@ class BackendService{
         })
 
         if(response.status === 200){
-            console.log("User " + localStorage.getItem("name") + " stored in DB successfully.")
+            console.log("User stored in DB successfully.")
         } else {
             console.error("The server responded with a ", response.status)
         }
 
     }
 }
-
 
 export default new BackendService();

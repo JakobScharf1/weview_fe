@@ -7,6 +7,7 @@
     <div v-if="this.viewType === 'candidate'"><InputFieldsCandidate /></div>
     <div v-if="this.viewType === 'personal'"><InputFieldsPersonal /></div>
 
+    <p v-if="error" class="error-text">Bitte fühle alle Pflichtfelder aus!</p>
     <button class="btn-primary" id="weiter-button" @click="submit()">Weiter</button>
 
   </div>
@@ -26,6 +27,7 @@ export default {
   data() {
     return {
       viewType: localStorage.getItem("view-type"),
+      error: false
     }
   },
   components: {
@@ -37,17 +39,58 @@ export default {
   },
   methods: {
     submit() {
-      BackendService.generateHTML(this.$cookies.get("token"), this.$cookies.get("email")).then(response => {
-        console.log("generateHTML Response: ", response)
-        localStorage.setItem("viewLink", response)
+      if(localStorage.getItem("view-type") === "job"){
+        if(localStorage.getItem("job_project") != null &&
+            localStorage.getItem("job_contracttype") != null &&
+            localStorage.getItem("job_skills") != null &&
+            localStorage.getItem("job_descr") != null
+        ) {
+          BackendService.generateHTML(this.$cookies.get("token"), this.$cookies.get("email")).then(response => {
+            console.log("generateHTML Response: ", response)
+            localStorage.setItem("viewLink", response)
 
-        router.push("/success")
-      });
+            router.push("/success")
+          });
+        } else {
+          this.error = true
+        }
+      } else if(localStorage.getItem("view-type") === "personal"){
+        if(localStorage.getItem("personal_branche") != null &&
+            localStorage.getItem("personal_region") != null &&
+            localStorage.getItem("personal_contracttype") != null
+        ) {
+          BackendService.generateHTML(this.$cookies.get("token"), this.$cookies.get("email")).then(response => {
+            console.log("generateHTML Response: ", response)
+            localStorage.setItem("viewLink", response)
+
+            router.push("/success")
+          });
+        } else {
+          this.error = true
+        }
+      } else if(localStorage.getItem("view-type") === "candidate"){
+        if(localStorage.getItem("candidate_name") != null &&
+            localStorage.getItem("candidate_contracttype") != null &&
+            localStorage.getItem("candidate_skills") != null
+        ) {
+          BackendService.generateHTML(this.$cookies.get("token"), this.$cookies.get("email")).then(response => {
+            console.log("generateHTML Response: ", response)
+            localStorage.setItem("viewLink", response)
+
+            router.push("/success")
+          });
+        } else {
+          this.error = true
+        }
+      }
     }
   },
 }
 </script>
 
 <style>
-
+.error-text {
+  color: red;
+  margin: 0;
+}
 </style>

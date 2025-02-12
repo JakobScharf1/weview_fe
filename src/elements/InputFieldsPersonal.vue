@@ -1,7 +1,7 @@
 <template>
   <div class="full-width-div">
     <BIconArrowLeftCircleFill class="back-icon" @click="$router.back()"/>
-    <h1>Infos zu dir</h1>
+    <h1>Infos zu Dir</h1>
   </div>
   <table>
     <tr>
