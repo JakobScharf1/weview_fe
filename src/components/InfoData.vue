@@ -7,7 +7,7 @@
     <div v-if="this.viewType === 'candidate'"><InputFieldsCandidate /></div>
     <div v-if="this.viewType === 'personal'"><InputFieldsPersonal /></div>
 
-    <p v-if="error" class="error-text">Bitte fühle alle Pflichtfelder aus!</p>
+    <p v-if="error" class="error-text">Bitte fülle alle Pflichtfelder aus!</p>
     <button class="btn-primary" id="weiter-button" @click="submit()">Weiter</button>
 
   </div>

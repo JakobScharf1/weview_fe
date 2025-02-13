@@ -10,6 +10,7 @@
         </a>
         <span class="title">{{ item.title }}</span>
         <span class="created">Von: {{ item.created }}</span>
+        <span class="aufrufe">Aufrufe: {{ item.aufrufe }}</span>
       </div>
     </div>
   </div>
@@ -17,6 +18,7 @@
 
 <script>
 import BackendService from "@/services/BackendService";
+import axios from "axios";
 
 export default {
   data() {
@@ -27,17 +29,36 @@ export default {
   async mounted() {
     const email = this.$cookies.get("email")
     const token = this.$cookies.get("token")
+
     await BackendService.getUserWeviews(email, token).then(response => {
       const responseJson = JSON.parse(response.toString())
       this.views = responseJson.map(item => ({
+        id: item.id,
         link: item.link,
         gifLink: item.gifLink,
         title: item.title,
-        created: item.created
+        created: item.created,
+        aufrufe: 0
       }))
-
     })
-    console.log(this.views)
+
+    const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
+    const aufrufeRequests = this.views.map(item =>
+        axios.get(BACKEND_BASE_URL + "/analytics/" + item.id, {
+          headers: {
+            'Authorization': token
+          }
+    }).then(response => {
+          item.aufrufe = response.data.data;
+        }).catch(error => {
+          console.error(`Fehler bei Aufrufen für ID ${item.id}:`, error);
+          item.aufrufe = "Fehler";
+        })
+    );
+
+    await Promise.all(aufrufeRequests)
+    console.log("Views", this.views)
+
   }
 }
 </script>
