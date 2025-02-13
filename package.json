@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:testing": "cross-env NODE_ENV=production BUILD_MODE=testing vue-cli-service build --mode testing",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
