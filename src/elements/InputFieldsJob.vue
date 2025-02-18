@@ -49,7 +49,7 @@
         <label class="contact-label" id="skills-label" for="skills-input">Skills*: </label>
       </td>
       <td class="sec-col">
-        <textarea class="inputfield" id="skills-input" v-model="skills"></textarea>
+        <textarea rows="2" cols="50" class="inputfield" id="skills-input" v-model="skills"></textarea>
       </td>
     </tr>
     <tr>
@@ -57,7 +57,7 @@
         <label class="contact-label" id="descr-label" for="descr-input">Über das Projekt/den Job*: </label>
       </td>
       <td class="sec-col">
-        <textarea class="inputfield" id="descr-input" v-model="descr"></textarea>
+        <textarea rows="4" cols="50" class="inputfield" id="descr-input" v-model="descr"></textarea>
       </td>
     </tr>
   </table>
@@ -111,6 +111,7 @@ export default {
   textarea.inputfield {
     margin-bottom: 0;
     resize: vertical;
+    height: 60px;
   }
 
   .first-col-infodata {

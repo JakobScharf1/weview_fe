@@ -9,8 +9,17 @@
           <img :src="item.gifLink" alt="gif" class="gifPreview">
         </a>
         <span class="title">{{ item.title }}</span>
-        <span class="created">Von: {{ item.created }}</span>
-        <span class="aufrufe">Aufrufe: {{ item.aufrufe }}</span>
+        <table class="details-table">
+          <tr>
+            <td class="details-text">
+              <span class="created">Von: {{ item.created }}</span>
+              <span class="aufrufe">Aufrufe: {{ item.aufrufe }}</span>
+            </td>
+            <td class="details-icon" @click="deleteView(item.id)">
+              <BIconTrashFill></BIconTrashFill>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
@@ -19,6 +28,7 @@
 <script>
 import BackendService from "@/services/BackendService";
 import axios from "axios";
+import {BIconTrashFill} from "bootstrap-icons-vue";
 
 export default {
   data() {
@@ -26,44 +36,73 @@ export default {
       views: []
     }
   },
+  components: {
+    BIconTrashFill
+  },
+  methods: {
+    async deleteView(id){
+      await BackendService.deleteView(this.$cookies.get("token"), id)
+      await this.getViewsData()
+    },
+    async getViewsData(){
+      const email = this.$cookies.get("email")
+      const token = this.$cookies.get("token")
+
+      await BackendService.getUserWeviews(email, token).then(response => {
+        const responseJson = JSON.parse(response.toString())
+        this.views = responseJson.map(item => ({
+          id: item.id,
+          link: item.link,
+          gifLink: item.gifLink,
+          title: item.title,
+          created: item.created,
+          aufrufe: 0
+        }))
+      })
+
+      const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
+      const aufrufeRequests = this.views.map(item =>
+          axios.get(BACKEND_BASE_URL + "/analytics/" + item.id, {
+            headers: {
+              'Authorization': token
+            }
+          }).then(response => {
+            item.aufrufe = response.data.data;
+          }).catch(error => {
+            console.error(`Fehler bei Aufrufen für ID ${item.id}:`, error);
+            item.aufrufe = "Fehler";
+          })
+      );
+
+      await Promise.all(aufrufeRequests)
+      console.log("Views", this.views)
+    }
+  },
   async mounted() {
-    const email = this.$cookies.get("email")
-    const token = this.$cookies.get("token")
-
-    await BackendService.getUserWeviews(email, token).then(response => {
-      const responseJson = JSON.parse(response.toString())
-      this.views = responseJson.map(item => ({
-        id: item.id,
-        link: item.link,
-        gifLink: item.gifLink,
-        title: item.title,
-        created: item.created,
-        aufrufe: 0
-      }))
-    })
-
-    const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
-    const aufrufeRequests = this.views.map(item =>
-        axios.get(BACKEND_BASE_URL + "/analytics/" + item.id, {
-          headers: {
-            'Authorization': token
-          }
-    }).then(response => {
-          item.aufrufe = response.data.data;
-        }).catch(error => {
-          console.error(`Fehler bei Aufrufen für ID ${item.id}:`, error);
-          item.aufrufe = "Fehler";
-        })
-    );
-
-    await Promise.all(aufrufeRequests)
-    console.log("Views", this.views)
-
+    await this.getViewsData()
   }
 }
 </script>
 
 <style>
+.details-table {
+  width: 100%;
+  margin-top: 0;
+}
+
+.details-text {
+  width: auto;
+  display: grid;
+}
+
+.details-icon {
+  width: auto;
+}
+
+.details-icon:hover {
+  cursor: pointer;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -79,8 +118,7 @@ export default {
 }
 
 .gifPreview {
-  width: 100%;
-  max-width: 150px;
+  width: 150px;
   height: auto;
 }
 

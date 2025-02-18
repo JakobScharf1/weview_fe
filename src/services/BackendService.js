@@ -131,6 +131,17 @@ class BackendService{
         }
     }
 
+    async deleteView(token, id){
+        const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
+        let requestURI = BACKEND_BASE_URL + "/views/" + id
+        const response = await axios.delete(requestURI, {
+            headers: {
+                'Authorization': token
+            }
+        })
+        return response.status === 200;
+    }
+
     async getUserData(email, token){
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
 

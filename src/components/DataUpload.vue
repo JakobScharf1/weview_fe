@@ -36,7 +36,7 @@
         <div class="upload-button-text-div centered">
           <label for="portrait" id="portrait-button" :class="{ 'btn-primary-outline upload-complete' : finished_p, 'btn-primary' : !finished_p }">Portraitbild hochladen</label>
           <input type="file" ref="pic" accept="image/*" style="display: none" id="portrait" v-on:change="uploadPic()" :class="{ 'upload-complete' : finished_p }" />
-          <span class="hinweistext">Bitte nutze dein rundes, kleines Portraitbild<br/>wie in deiner Email-Signatur.</span>
+          <span class="hinweistext">Bitte nutze dein rundes, kleines Portraitbild<br/>wie in deiner Email-Signatur. <a href="https://drive.google.com/drive/folders/1kV9kuDzMO5eHp3rJCGpfR9HgVnTALJG-" target="_blank">Link zum Ordner</a></span>
           <span class="error" id="error-p">Bitte lade ein Portraitbild hoch.</span>
         </div>
       </div>
@@ -133,6 +133,11 @@ export default {
 </script>
 
 <style>
+
+a {
+  text-decoration: none;
+  color: aquamarine;
+}
 
 .error {
   display: none;
