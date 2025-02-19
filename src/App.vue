@@ -52,7 +52,7 @@ h2 {
 }
 
 .background {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 600px;
@@ -81,11 +81,12 @@ h2 {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: auto;
+  z-index: 1000;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
+  background-color: #001F25;
 }
 
 .full-width-div {

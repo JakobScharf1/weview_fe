@@ -15,8 +15,9 @@
               <span class="created">Von: {{ item.created }}</span>
               <span class="aufrufe">Aufrufe: {{ item.aufrufe }}</span>
             </td>
-            <td class="details-icon" @click="deleteView(item.id)">
-              <BIconTrashFill></BIconTrashFill>
+            <td class="details-icon">
+              <BIconTrashFill @click="deleteView(item.id)" class="clickable trash-clickable"></BIconTrashFill>
+              <BIconCopy @click="copyGif(item.gifLink, item.link)" class="gifLink clickable copy-clickable"></BIconCopy>
             </td>
           </tr>
         </table>
@@ -28,7 +29,7 @@
 <script>
 import BackendService from "@/services/BackendService";
 import axios from "axios";
-import {BIconTrashFill} from "bootstrap-icons-vue";
+import {BIconTrashFill, BIconCopy} from "bootstrap-icons-vue";
 
 export default {
   data() {
@@ -37,7 +38,8 @@ export default {
     }
   },
   components: {
-    BIconTrashFill
+    BIconTrashFill,
+    BIconCopy
   },
   methods: {
     async deleteView(id){
@@ -76,6 +78,17 @@ export default {
 
       await Promise.all(aufrufeRequests)
       console.log("Views", this.views)
+    },
+
+    async copyGif(gifLink, link) {
+      const htmlContent = "<a href='" + link + "'><img src='" + gifLink + "' alt='GIF' height='150px' target='_blank'></a>"
+      const blob = new Blob([htmlContent], { type: "text/html"})
+      const clipboardItem = new ClipboardItem({"text/html": blob})
+      try {
+        await navigator.clipboard.write([clipboardItem])
+      } catch (error) {
+        console.error("Fehler beim Kopieren des GIFs: ", error)
+      }
     }
   },
   async mounted() {
@@ -137,5 +150,21 @@ export default {
 
 .created {
   font-size: small;
+}
+
+.gifLink {
+  margin-left: 5px;
+}
+
+.copy-clickable:hover {
+  color: aquamarine;
+}
+
+.trash-clickable:hover {
+  color: red;
+}
+
+.clickable:active {
+  color: gray;
 }
 </style>
