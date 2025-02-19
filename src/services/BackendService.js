@@ -39,7 +39,6 @@ class BackendService{
                 console.log("response data: ", response)
                 const json = JSON.parse(response.data.data)
                 if (file.type.startsWith("video")){
-                    localStorage.setItem("view_id", json.view_id)
                     localStorage.setItem("video_url", json.vid_url)
                     localStorage.setItem("gifLink", json.gif_url)
                 } else if(file.type.startsWith("image")){
@@ -58,9 +57,9 @@ class BackendService{
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
         let obj = {}
         obj.token = token
-        obj.view_id = localStorage.getItem("view_id")
         obj.vidLink = localStorage.getItem("video_url")
         obj.picLink = localStorage.getItem("portrait_url")
+        obj.gifLink = localStorage.getItem("gifLink")
         obj.weviewType = localStorage.getItem("view-type")
         obj.name = localStorage.getItem("name")
         obj.position = localStorage.getItem("position")
