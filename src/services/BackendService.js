@@ -160,6 +160,7 @@ class BackendService{
             params.forEach(key => {
                 localStorage.setItem(key, json[key] ?? "");
             });
+            localStorage.setItem("portrait_url", json["picLink"])
 
         }
     }

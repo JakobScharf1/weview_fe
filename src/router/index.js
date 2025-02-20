@@ -6,7 +6,6 @@ import DataUpload from "@/components/DataUpload.vue";
 import ContactData from "@/components/ContactData.vue";
 import InfoData from "@/components/InfoData.vue";
 import GeneratingSuccess from "@/components/GeneratingSuccess.vue";
-import DataCheck from "@/components/DataCheck.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -17,36 +16,39 @@ const router = createRouter({
         },
         {
             path: '/login',
-            component: SSOLogin
+            component: SSOLogin,
+            name: 'Login | WeView'
         },
         {
             path: '/home',
-            component: HomeDashboard
+            component: HomeDashboard,
+            name: 'Dashboard | WeView'
         },
         {
             path: '/chooseViewType',
             component: ChooseViewType,
+            name: 'View-Typ | WeView'
         },
         {
             path: '/dataUpload',
-            component: DataUpload
+            component: DataUpload,
+            name: 'Daten-Upload | WeView'
         },
         {
             path: '/contactData',
-            component: ContactData
+            component: ContactData,
+            name: 'Kontaktdaten | WeView'
         },
         {
             path: '/infoData',
-            component: InfoData
+            component: InfoData,
+            name: 'Zusatzinfos | WeView'
         },
         {
             path: '/success',
-            component: GeneratingSuccess
+            component: GeneratingSuccess,
+            name: 'WeView generiert | WeView'
         },
-        {
-            path: '/datacheck',
-            component: DataCheck
-        }
     ]
 })
 

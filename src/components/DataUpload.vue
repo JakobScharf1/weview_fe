@@ -115,17 +115,20 @@ export default {
     },
     finished_p(newValue) {
       localStorage.setItem("finished_p", newValue.toString())
-    }
+    },
   },
-  beforeMount() {
+  async mounted() {
     if(localStorage.getItem("portrait_url") === null){
       const email = this.$cookies.get("email")
       const token = this.$cookies.get("token")
-      BackendService.getUserPortrait(email, token)
+      await BackendService.getUserData(email, token)
       if(localStorage.getItem("portrait_url") !== null){
         this.finished_p = true;
         this.portraitUrl = localStorage.getItem("portrait_url")
       }
+    } else {
+      this.portraitUrl = localStorage.getItem("portrait_url")
+      this.finished_p = true
     }
   }
 }

@@ -127,7 +127,12 @@ export default {
     }
   },
   async mounted() {
-    try {
+    this.name = localStorage.getItem("name")
+    this.position = localStorage.getItem("position")
+    this.location = localStorage.getItem("location")
+    this.tel = localStorage.getItem("tel")
+    this.linkedin = localStorage.getItem("linkedin")
+    /*try {
       await BackendService.getUserData(this.$cookies.get("email"), this.$cookies.get("token")).then(data => {
         if (localStorage.getItem("name") !== "undefined" && data !== null) {
           this.name = localStorage.getItem("name")
@@ -142,7 +147,7 @@ export default {
       })
     } catch(error){
       console.error("Fehler beim Abrufen der Daten: ", error)
-    }
+    }*/
   },
   watch: {
     name(newValue){

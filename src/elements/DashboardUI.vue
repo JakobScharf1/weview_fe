@@ -58,7 +58,7 @@ export default {
           gifLink: item.gifLink,
           title: item.title,
           created: item.created,
-          aufrufe: 0
+          aufrufe: ''
         }))
       })
 
