@@ -41,6 +41,8 @@ class BackendService{
                 if (file.type.startsWith("video")){
                     localStorage.setItem("video_url", json.vid_url)
                     localStorage.setItem("gifLink", json.gif_url)
+                    localStorage.setItem("vid_id", json.vid_id)
+                    localStorage.setItem("gif_id", json.gif_id)
                 } else if(file.type.startsWith("image")){
                     localStorage.setItem("portrait_url", json.url)
                 }
@@ -60,6 +62,8 @@ class BackendService{
         obj.vidLink = localStorage.getItem("video_url")
         obj.picLink = localStorage.getItem("portrait_url")
         obj.gifLink = localStorage.getItem("gifLink")
+        obj.gif_id = localStorage.getItem("gif_id")
+        obj.vid_id = localStorage.getItem("vid_id")
         obj.weviewType = localStorage.getItem("view-type")
         obj.name = localStorage.getItem("name")
         obj.position = localStorage.getItem("position")
@@ -99,7 +103,7 @@ class BackendService{
 
         return response.data.data;
     }
-
+/*
     async getUserPortrait(email, token) {
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
         let requestURI = BACKEND_BASE_URL + "/user/" + email
@@ -113,7 +117,7 @@ class BackendService{
             localStorage.setItem("portrait_url", json.picLink)
             console.log("Portrait URL: ", json.picLink)
         }
-    }
+    }*/
 
     async getUserWeviews(email, token) {
         const BACKEND_BASE_URL = process.env.VUE_APP_BACKEND_URL
