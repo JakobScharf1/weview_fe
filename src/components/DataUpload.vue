@@ -118,11 +118,11 @@ export default {
     },
   },
   async mounted() {
-    if(localStorage.getItem("portrait_url") === null){
+    if(localStorage.getItem("portrait_url") === null || localStorage.getItem("portrait_url") === "undefined"){
       const email = this.$cookies.get("email")
       const token = this.$cookies.get("token")
       await BackendService.getUserData(email, token)
-      if(localStorage.getItem("portrait_url") !== null){
+      if(localStorage.getItem("portrait_url") !== null && localStorage.getItem("portrait_url") !== "undefined"){
         this.finished_p = true;
         this.portraitUrl = localStorage.getItem("portrait_url")
       }

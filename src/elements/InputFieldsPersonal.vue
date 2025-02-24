@@ -25,7 +25,10 @@
         <label class="contact-label" id="contracttype-label" for="contracttype-input">Vertragsart/-en*: </label>
       </td>
       <td class="sec-col">
-        <input class="inputfield" id="contracttype-input" v-model="contracttype" type="text">
+        <select class="inputfield full-width" id="contracttype-input" v-model="contracttype">
+          <option value="Contract/Freelance">Contract</option>
+          <option value="Perm">Perm</option>
+        </select>
       </td>
     </tr>
     <tr>
