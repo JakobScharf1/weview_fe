@@ -26,8 +26,8 @@
       </td>
       <td class="sec-col">
         <select class="inputfield full-width" id="contracttype-input" v-model="contracttype">
-          <option value="Contract/Freelance">Contract</option>
-          <option value="Perm">Perm</option>
+          <option value="Freelance Projekt">Contract</option>
+          <option value="Festanstellung">Perm</option>
         </select>
       </td>
     </tr>
